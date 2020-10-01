@@ -19,6 +19,8 @@ package me.lambdaurora.tesla_coil.block.entity;
 
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -27,6 +29,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 
@@ -35,7 +38,7 @@ import java.util.Random;
 public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
 {
     private final Random  random        = new Random();
-    private       boolean enabled       = true;
+    private       boolean enabled       = false;
     private       int     sideParticles = 0;
 
     public TeslaCoilBlockEntity()
@@ -59,34 +62,84 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
 
     public void checkStructure()
     {
+        if (this.world.getTime() % 80L != 0L) {
+            return;
+        }
 
+        BlockPos.Mutable pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY() - 1, this.pos.getZ());
+
+        for (int i = 0; i < 4; i++) {
+            BlockState state = this.world.getBlockState(pos);
+
+            if (i < 3) {
+                if (i < 2) {
+                    if (state.getBlock() != TeslaCoilRegistry.TESLA_SECONDARY_COIL_BLOCK) {
+                        this.enabled = false;
+                        return;
+                    }
+                } else if (state.getBlock() != Blocks.REDSTONE_BLOCK) {
+                    this.enabled = false;
+                    return;
+                }
+
+                for (Direction direction : Direction.values()) {
+                    if (!direction.getAxis().isHorizontal())
+                        continue;
+
+                    pos.move(direction.getOffsetX(), 0, direction.getOffsetZ());
+
+                    state = this.world.getBlockState(pos);
+                    if (state.getBlock() != Blocks.IRON_BARS) {
+                        this.enabled = false;
+                        return;
+                    }
+
+                    pos.move(-direction.getOffsetX(), 0, -direction.getOffsetZ());
+                }
+            } else {
+                if (state.getBlock() != Blocks.EMERALD_BLOCK) {
+                    this.enabled = false;
+                    return;
+                }
+            }
+
+            pos.move(0, -1, 0);
+        }
+
+        this.enabled = true;
     }
 
     public void displaySideParticles()
     {
-        if (this.sideParticles > 12) {
+        if (this.sideParticles > 18) {
             this.sideParticles = 0;
         }
 
-        float xPos = this.pos.getX() + .5f;
-        float zPos = this.pos.getZ() + .5f;
-        float yOffset = this.sideParticles / 3.f;
-        float yPos = this.pos.getY() - 3 + yOffset;
+        if (this.sideParticles % 2 == 0) {
+            float xPos = this.pos.getX() + .5f;
+            float zPos = this.pos.getZ() + .5f;
+            float yOffset = this.sideParticles / 2.f / 3.f;
+            float yPos = this.pos.getY() - 3 + yOffset;
 
-        for (Direction direction : Direction.values()) {
-            if (direction.getAxis().isHorizontal()) {
-                this.world.addParticle(ParticleTypes.CRIT, xPos, yPos, zPos, 0, 1, 0);
+            for (Direction direction : Direction.values()) {
+                if (direction.getAxis().isHorizontal()) {
+                    this.world.addParticle(ParticleTypes.CRIT,
+                            xPos + direction.getOffsetX(), yPos, zPos + direction.getOffsetZ(),
+                            0, 0.025, 0);
+                }
             }
         }
+
+        this.sideParticles++;
     }
 
     public void tryAttack()
     {
-        if (this.world.getTime() % 40L != 0L || this.random.nextBoolean())
+        if (this.world.getTime() % 20L != 0L || this.random.nextBoolean())
             return;
 
         TargetPredicate targetPredicate = new TargetPredicate();
-        targetPredicate.setPredicate(entity -> !(entity instanceof PlayerEntity));
+        targetPredicate.setPredicate(entity -> entity instanceof HostileEntity);
         LivingEntity entity = this.world.getClosestEntity(HostileEntity.class, targetPredicate, null,
                 this.pos.getX() + 0.5, this.pos.getY(), this.pos.getZ() + 0.5,
                 new Box(this.pos.getX() - 10, this.pos.getY() - 8, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 5, this.pos.getZ() + 10));
@@ -95,6 +148,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
             LightningArcEntity lightningEntity = new LightningArcEntity(this.world);
 
             lightningEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
+            lightningEntity.setTargetPredicate(targetPredicate);
 
             this.world.spawnEntity(lightningEntity);
 

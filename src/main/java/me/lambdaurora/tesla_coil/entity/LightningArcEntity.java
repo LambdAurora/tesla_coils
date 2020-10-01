@@ -21,6 +21,8 @@ import me.lambdaurora.tesla_coil.mixin.LightningEntityAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -31,9 +33,21 @@ import java.util.List;
 
 public class LightningArcEntity extends LightningEntity
 {
+    private TargetPredicate targetPredicate;
+
     public LightningArcEntity(World world)
     {
         super(EntityType.LIGHTNING_BOLT, world);
+    }
+
+    public TargetPredicate getTargetPredicate()
+    {
+        return this.targetPredicate;
+    }
+
+    public void setTargetPredicate(TargetPredicate targetPredicate)
+    {
+        this.targetPredicate = targetPredicate;
     }
 
     @Override
@@ -44,9 +58,9 @@ public class LightningArcEntity extends LightningEntity
         int ambientTick = ((LightningEntityAccessor) this).getAmbientTick();
         if (ambientTick == 2) {
             this.world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER,
-                    10000.f, .8f + this.random.nextFloat() * .2f);
+                    10.f, .8f + this.random.nextFloat() * .2f);
             this.world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.WEATHER,
-                    2.f, .5f + this.random.nextFloat() * .2f);
+                    1.f, .5f + this.random.nextFloat() * .2f);
         }
 
         --ambientTick;
@@ -66,10 +80,15 @@ public class LightningArcEntity extends LightningEntity
                 this.world.setLightningTicksLeft(2);
             } else {
                 double d = 3.0D;
-                List<Entity> list = this.world.getOtherEntities(this, new Box(this.getX() - 3.0D, this.getY() - 3.0D, this.getZ() - 3.0D, this.getX() + 3.0D, this.getY() + 6.0D + 3.0D, this.getZ() + 3.0D), Entity::isAlive);
+                List<Entity> list = this.world.getOtherEntities(this,
+                        new Box(this.getX() - d, this.getY() - d, this.getZ() - d,
+                                this.getX() + d, this.getY() + 6.0D + d, this.getZ() + d),
+                        Entity::isAlive);
 
                 for (Entity entity : list) {
-                    entity.onStruckByLightning((ServerWorld) this.world, this);
+                    if (entity instanceof LivingEntity && targetPredicate.test(null, (LivingEntity) entity)) {
+                        entity.onStruckByLightning((ServerWorld) this.world, this);
+                    }
                 }
             }
         }

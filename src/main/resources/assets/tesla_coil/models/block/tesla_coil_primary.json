@@ -2,10 +2,10 @@
   "__comment": "Model made by LambdAurora",
   "parent": "block/block",
   "textures": {
-    "coil": "tesla_coil:tesla_coil_primary",
-    "coil_top": "tesla_coil:tesla_coil_primary_top",
-    "coil_secondary": "tesla_coil:tesla_coil_secondary",
-    "particle": "tesla_coil:tesla_coil_primary"
+    "coil": "tesla_coil:block/tesla_coil_primary",
+    "coil_top": "tesla_coil:block/tesla_coil_primary_top",
+    "coil_secondary": "tesla_coil:block/tesla_coil_secondary",
+    "particle": "tesla_coil:block/tesla_coil_primary"
   },
   "elements": [
     {
@@ -38,11 +38,11 @@
       "from": [ 7, 13, 7 ],
       "to": [ 9, 14, 9 ],
       "faces": {
-        "north": {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
-        "east":  {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
-        "south": {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
-        "west":  {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
-        "up":  {"uv": [ 6, 0, 10, 4 ], "texture":  "#coil_secondary"}
+        "north": {"uv": [ 2, 0, 4, 1 ], "texture":  "#coil_secondary"},
+        "east":  {"uv": [ 2, 0, 4, 1 ], "texture":  "#coil_secondary"},
+        "south": {"uv": [ 2, 0, 4, 1 ], "texture":  "#coil_secondary"},
+        "west":  {"uv": [ 2, 0, 4, 1 ], "texture":  "#coil_secondary"},
+        "up":    {"uv": [ 8, 2, 10, 4 ], "texture":  "#coil_secondary"}
       }
     }
   ]

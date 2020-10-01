@@ -1,0 +1,106 @@
+import net.fabricmc.loom.task.RemapJarTask
+
+plugins {
+    id 'fabric-loom' version '0.4-SNAPSHOT'
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.minecrell.licenser' version '0.4.1'
+}
+
+group = project.maven_group
+version = "${project.mod_version}+${project.minecraft_version}"
+archivesBaseName = project.archives_base_name + "-fabric"
+
+minecraft {
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name = "AperLambda"
+        url = 'https://aperlambda.github.io/maven'
+    }
+    maven { url = "https://jitpack.io" }
+    flatDir {
+        dirs "lib"
+    }
+}
+
+configurations {
+    shadow
+    api.extendsFrom shadow
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+    include "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+
+    modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
+
+    shadow("org.aperlambda:lambdajcommon:1.8.1") {
+        // Minecraft already has all that google crap.
+        exclude group: 'com.google.code.gson'
+        exclude group: 'com.google.guava'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "fabric.mod.json"
+        expand "version": project.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "fabric.mod.json"
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
+}
+
+jar {
+    from "LICENSE"
+}
+
+license {
+    header file('HEADER')
+    include '**/*.java'
+}
+
+task shadowJar(type: Jar) {
+    archiveClassifier.set("dev")
+
+    from sourceSets.main.output
+
+    from {
+        configurations.shadow.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task shadowRemapJar(type: RemapJarTask) {
+    dependsOn shadowJar
+
+    input = file("${project.buildDir}/libs/$archivesBaseName-$version-dev.jar")
+    archiveName = "${archivesBaseName}-${version}.jar"
+    addNestedDependencies = true
+}

@@ -1,0 +1,49 @@
+{
+  "__comment": "Model made by LambdAurora",
+  "parent": "block/block",
+  "textures": {
+    "coil": "tesla_coil:tesla_coil_primary",
+    "coil_top": "tesla_coil:tesla_coil_primary_top",
+    "coil_secondary": "tesla_coil:tesla_coil_secondary",
+    "particle": "tesla_coil:tesla_coil_primary"
+  },
+  "elements": [
+    {
+      "name": "coil",
+      "from": [ 0, 3, 0 ],
+      "to": [ 16, 13, 16 ],
+      "faces": {
+        "north": {"uv": [ 0, 3, 16, 13 ], "texture":  "#coil", "cullface":  "north"},
+        "east":  {"uv": [ 0, 3, 16, 13 ], "texture":  "#coil", "cullface":  "east"},
+        "south": {"uv": [ 0, 3, 16, 13 ], "texture":  "#coil", "cullface":  "south"},
+        "west":  {"uv": [ 0, 3, 16, 13 ], "texture":  "#coil", "cullface":  "west"},
+        "up":    {"uv": [ 0, 0, 16, 16 ], "texture":  "#coil_top"},
+        "down":  {"uv": [ 0, 0, 16, 16 ], "texture":  "#coil_top"}
+      }
+    },
+    {
+      "name": "secondary",
+      "from": [ 5, 0, 5 ],
+      "to": [ 11, 3, 11 ],
+      "faces": {
+        "north": {"uv": [ 0, 0, 6, 3 ], "texture":  "#coil_secondary"},
+        "east":  {"uv": [ 0, 0, 6, 3 ], "texture":  "#coil_secondary"},
+        "south": {"uv": [ 0, 0, 6, 3 ], "texture":  "#coil_secondary"},
+        "west":  {"uv": [ 0, 0, 6, 3 ], "texture":  "#coil_secondary"},
+        "down":  {"uv": [ 6, 0, 10, 4 ], "texture":  "#coil_secondary", "cullface":  "down"}
+      }
+    },
+    {
+      "name": "top",
+      "from": [ 7, 13, 7 ],
+      "to": [ 9, 14, 9 ],
+      "faces": {
+        "north": {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
+        "east":  {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
+        "south": {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
+        "west":  {"uv": [ 0, 0, 4, 3 ], "texture":  "#coil_secondary"},
+        "up":  {"uv": [ 6, 0, 10, 4 ], "texture":  "#coil_secondary"}
+      }
+    }
+  ]
+}

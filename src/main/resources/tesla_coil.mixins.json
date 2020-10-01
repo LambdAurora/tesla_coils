@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "me.lambdaurora.tesla_coil.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "LightningEntityAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

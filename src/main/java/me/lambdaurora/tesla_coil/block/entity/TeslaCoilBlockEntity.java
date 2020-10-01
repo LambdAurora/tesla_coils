@@ -26,7 +26,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -44,6 +43,11 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
     public TeslaCoilBlockEntity()
     {
         super(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE);
+    }
+
+    public boolean isEnabled()
+    {
+        return this.enabled;
     }
 
     @Override

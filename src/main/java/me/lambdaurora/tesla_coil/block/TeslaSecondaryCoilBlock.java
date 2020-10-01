@@ -17,12 +17,17 @@
 
 package me.lambdaurora.tesla_coil.block;
 
+import me.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 
 public class TeslaSecondaryCoilBlock extends Block
 {
@@ -49,5 +54,23 @@ public class TeslaSecondaryCoilBlock extends Block
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
     {
         return BASE_SHAPE;
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
+    {
+        BlockPos.Mutable mutablePos = new BlockPos.Mutable(pos.getX(), pos.getY() + 1, pos.getZ());
+        for (int i = 0; i < 2; i++) {
+            BlockEntity blockEntity = world.getBlockEntity(mutablePos);
+            if (!(blockEntity instanceof TeslaCoilBlockEntity))
+                return;
+
+            if (((TeslaCoilBlockEntity) blockEntity).isEnabled()) {
+                entity.damage(DamageSource.LIGHTNING_BOLT, 1.0F);
+                return;
+            }
+
+            mutablePos.move(0, 1, 0);
+        }
     }
 }

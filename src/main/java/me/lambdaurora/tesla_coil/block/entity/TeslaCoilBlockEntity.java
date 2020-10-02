@@ -26,6 +26,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
@@ -64,7 +65,22 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         }
     }
 
-    public void checkStructure()
+    @Override
+    public void fromTag(BlockState state, CompoundTag tag)
+    {
+        super.fromTag(state, tag);
+        this.enabled = tag.getBoolean("enabled");
+    }
+
+    @Override
+    public CompoundTag toTag(CompoundTag tag)
+    {
+        tag = super.toTag(tag);
+        tag.putBoolean("enabled", this.enabled);
+        return tag;
+    }
+
+    protected void checkStructure()
     {
         if (this.world.getTime() % 80L != 0L) {
             return;
@@ -113,7 +129,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         this.enabled = true;
     }
 
-    public void displaySideParticles()
+    protected void displaySideParticles()
     {
         if (this.sideParticles > 18) {
             this.sideParticles = 0;
@@ -137,7 +153,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         this.sideParticles++;
     }
 
-    public void tryAttack()
+    protected void tryAttack()
     {
         if (this.world.getTime() % 20L != 0L || this.random.nextBoolean())
             return;

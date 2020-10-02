@@ -26,14 +26,17 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class LightningArcEntity extends LightningEntity
 {
     private TargetPredicate targetPredicate;
+    private BlockPos target;
 
     public LightningArcEntity(World world)
     {
@@ -48,6 +51,16 @@ public class LightningArcEntity extends LightningEntity
     public void setTargetPredicate(TargetPredicate targetPredicate)
     {
         this.targetPredicate = targetPredicate;
+    }
+
+    public @Nullable BlockPos getTarget()
+    {
+        return this.target;
+    }
+
+    public void setTarget(BlockPos target)
+    {
+        this.target = target;
     }
 
     @Override

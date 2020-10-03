@@ -24,7 +24,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
@@ -37,9 +36,9 @@ import java.util.Random;
 
 public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
 {
-    private final Random  random        = new Random();
-    private       boolean enabled       = false;
-    private       int     sideParticles = 0;
+    private final Random random = new Random();
+    private boolean enabled = false;
+    private int sideParticles = 0;
 
     public TeslaCoilBlockEntity()
     {
@@ -158,21 +157,28 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         if (this.world.getTime() % 20L != 0L || this.random.nextBoolean())
             return;
 
+        double x = this.getPos().getX() + 0.5;
+        double y = this.getPos().getY();
+        double z = this.getPos().getZ() + 0.5;
+
         TargetPredicate targetPredicate = new TargetPredicate();
         targetPredicate.setPredicate(entity -> entity instanceof HostileEntity);
         LivingEntity entity = this.world.getClosestEntity(HostileEntity.class, targetPredicate, null,
-                this.pos.getX() + 0.5, this.pos.getY(), this.pos.getZ() + 0.5,
+                x, y, z,
                 new Box(this.pos.getX() - 10, this.pos.getY() - 8, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 5, this.pos.getZ() + 10));
 
         if (entity != null) {
-            LightningArcEntity lightningEntity = new LightningArcEntity(this.world);
+            LightningArcEntity lightningEntity = TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE.create(this.world);
 
-            lightningEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
+            if (lightningEntity == null) return;
+
+            lightningEntity.setPos(x, y + 0.5, z);
+            lightningEntity.setTarget(entity.getBlockPos());
             lightningEntity.setTargetPredicate(targetPredicate);
 
             this.world.spawnEntity(lightningEntity);
 
-            entity.damage(DamageSource.LIGHTNING_BOLT, 1);
+            //entity.damage(DamageSource.LIGHTNING_BOLT, 1);
         }
     }
 }

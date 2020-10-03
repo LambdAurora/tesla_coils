@@ -8,6 +8,9 @@
   "entrypoints": {
     "main": [
       "me.lambdaurora.tesla_coil.TeslaCoilMod"
+    ],
+    "client": [
+      "me.lambdaurora.tesla_coil.client.TeslaCoilClientMod"
     ]
   },
   "mixins": [

@@ -23,6 +23,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -33,14 +36,28 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Represents the lightning arc entity.
+ *
+ * @author LambdAurora
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class LightningArcEntity extends LightningEntity
 {
+    private static final TrackedData<BlockPos> TARGET = DataTracker.registerData(LightningArcEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private TargetPredicate targetPredicate;
-    private BlockPos target;
 
-    public LightningArcEntity(World world)
+    public LightningArcEntity(EntityType<? extends LightningArcEntity> type, World world)
     {
-        super(EntityType.LIGHTNING_BOLT, world);
+        super(type, world);
+    }
+
+    @Override
+    protected void initDataTracker()
+    {
+        super.initDataTracker();
+        this.dataTracker.startTracking(TARGET, null);
     }
 
     public TargetPredicate getTargetPredicate()
@@ -55,18 +72,24 @@ public class LightningArcEntity extends LightningEntity
 
     public @Nullable BlockPos getTarget()
     {
-        return this.target;
+        return this.dataTracker.get(TARGET);
     }
 
     public void setTarget(BlockPos target)
     {
-        this.target = target;
+        this.dataTracker.set(TARGET, target);
     }
 
     @Override
     public void tick()
     {
         this.baseTick();
+
+        BlockPos target = this.getTarget();
+        if (target == null) {
+            this.remove();
+            return;
+        }
 
         int ambientTick = ((LightningEntityAccessor) this).getAmbientTick();
         if (ambientTick == 2) {
@@ -94,13 +117,13 @@ public class LightningArcEntity extends LightningEntity
             } else {
                 double d = 3.0D;
                 List<Entity> list = this.world.getOtherEntities(this,
-                        new Box(this.getX() - d, this.getY() - d, this.getZ() - d,
-                                this.getX() + d, this.getY() + 6.0D + d, this.getZ() + d),
+                        new Box(target.getX() - d, target.getY() - d, target.getZ() - d,
+                                target.getX() + d, target.getY() + 6.0D + d, target.getZ() + d),
                         Entity::isAlive);
 
                 for (Entity entity : list) {
                     if (entity instanceof LivingEntity && targetPredicate.test(null, (LivingEntity) entity)) {
-                        entity.onStruckByLightning((ServerWorld) this.world, this);
+                        //entity.onStruckByLightning((ServerWorld) this.world, this);
                     }
                 }
             }

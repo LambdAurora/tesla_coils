@@ -2,6 +2,9 @@
   "required": true,
   "package": "me.lambdaurora.tesla_coil.mixin",
   "compatibilityLevel": "JAVA_8",
+  "client": [
+    "ClientPlayNetworkHandlerMixin"
+  ],
   "mixins": [
     "LightningEntityAccessor"
   ],

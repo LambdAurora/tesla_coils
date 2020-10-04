@@ -4,6 +4,9 @@
   "name": "Tesla Coil",
   "version": "${version}",
   "license": "LGPLv3",
+  "authors": [
+    "LambdAurora"
+  ],
   "environment": "*",
   "entrypoints": {
     "main": [

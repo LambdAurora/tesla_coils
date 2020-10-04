@@ -24,6 +24,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
@@ -38,6 +39,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
 {
     private final Random random = new Random();
     private boolean enabled = false;
+    private int age = 0;
     private int sideParticles = 0;
 
     public TeslaCoilBlockEntity()
@@ -50,12 +52,18 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         return this.enabled;
     }
 
+    public int getAge()
+    {
+        return this.age;
+    }
+
     @Override
     public void tick()
     {
         this.checkStructure();
 
         if (this.enabled) {
+            this.age++;
             if (this.world.isClient()) {
                 this.displaySideParticles();
             } else {
@@ -125,6 +133,8 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
             pos.move(0, -1, 0);
         }
 
+        if (!this.enabled)
+            this.age = 0;
         this.enabled = true;
     }
 
@@ -178,7 +188,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
 
             this.world.spawnEntity(lightningEntity);
 
-            //entity.damage(DamageSource.LIGHTNING_BOLT, 1);
+            entity.damage(DamageSource.LIGHTNING_BOLT, 1);
         }
     }
 }

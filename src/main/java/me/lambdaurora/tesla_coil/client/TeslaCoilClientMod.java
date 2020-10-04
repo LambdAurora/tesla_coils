@@ -19,9 +19,11 @@ package me.lambdaurora.tesla_coil.client;
 
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import me.lambdaurora.tesla_coil.client.render.LightningArcEntityRenderer;
+import me.lambdaurora.tesla_coil.client.render.TeslaCoilBlockEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 
 /**
@@ -37,6 +39,7 @@ public class TeslaCoilClientMod implements ClientModInitializer
     @Override
     public void onInitializeClient()
     {
+        BlockEntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, TeslaCoilBlockEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, (dispatcher, context) -> new LightningArcEntityRenderer(dispatcher));
     }
 }

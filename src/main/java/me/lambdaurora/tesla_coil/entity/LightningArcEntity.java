@@ -94,9 +94,9 @@ public class LightningArcEntity extends LightningEntity
         int ambientTick = ((LightningEntityAccessor) this).getAmbientTick();
         if (ambientTick == 2) {
             this.world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.WEATHER,
-                    10.f, .8f + this.random.nextFloat() * .2f);
+                    1.f, .8f + this.random.nextFloat() * .2f);
             this.world.playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, SoundCategory.WEATHER,
-                    1.f, .5f + this.random.nextFloat() * .2f);
+                    .5f, .5f + this.random.nextFloat() * .2f);
         }
 
         --ambientTick;
@@ -111,20 +111,16 @@ public class LightningArcEntity extends LightningEntity
             }
         }
 
-        if (ambientTick >= 0) {
-            if (!(this.world instanceof ServerWorld)) {
-                this.world.setLightningTicksLeft(2);
-            } else {
-                double d = 3.0D;
-                List<Entity> list = this.world.getOtherEntities(this,
-                        new Box(target.getX() - d, target.getY() - d, target.getZ() - d,
-                                target.getX() + d, target.getY() + 6.0D + d, target.getZ() + d),
-                        Entity::isAlive);
+        if (ambientTick >= 0 && !this.world.isClient()) {
+            double d = 3.0D;
+            List<Entity> list = this.world.getOtherEntities(this,
+                    new Box(target.getX() - d, target.getY() - d, target.getZ() - d,
+                            target.getX() + d, target.getY() + 6.0D + d, target.getZ() + d),
+                    Entity::isAlive);
 
-                for (Entity entity : list) {
-                    if (entity instanceof LivingEntity && targetPredicate.test(null, (LivingEntity) entity)) {
-                        //entity.onStruckByLightning((ServerWorld) this.world, this);
-                    }
+            for (Entity entity : list) {
+                if (entity instanceof LivingEntity && targetPredicate.test(null, (LivingEntity) entity)) {
+                    entity.onStruckByLightning((ServerWorld) this.world, this);
                 }
             }
         }

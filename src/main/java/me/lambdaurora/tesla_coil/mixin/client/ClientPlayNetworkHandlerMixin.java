@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.lambdaurora.tesla_coil.mixin;
+package me.lambdaurora.tesla_coil.mixin.client;
 
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import net.minecraft.client.network.ClientPlayNetworkHandler;

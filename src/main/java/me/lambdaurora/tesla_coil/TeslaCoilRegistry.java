@@ -47,20 +47,21 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class TeslaCoilRegistry
 {
-    public static final TeslaPrimaryCoilBlock TESLA_COIL_BLOCK = register("tesla_coil_primary",
+    public static final TeslaPrimaryCoilBlock TESLA_COIL_TOP_LOAD_BLOCK = register("tesla_coil_top_load",
             new TeslaPrimaryCoilBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD)
                     .strength(3.f)));
     public static final TeslaSecondaryCoilBlock TESLA_SECONDARY_COIL_BLOCK = register("tesla_coil_secondary",
             new TeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD)
                     .strength(2.5f)));
 
-    public static final BlockItem TESLA_PRIMARY_COIL_ITEM = register("tesla_coil_primary", new BlockItem(TESLA_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.MISC)));
+    public static final BlockItem TESLA_COIL_TOP_LOAD_ITEM = register("tesla_coil_top_load", new BlockItem(TESLA_COIL_TOP_LOAD_BLOCK,
+            new FabricItemSettings().group(ItemGroup.MISC)));
     public static final BlockItem TESLA_SECONDARY_COIL_ITEM = register("tesla_coil_secondary",
             new BlockItem(TESLA_SECONDARY_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.MISC)));
 
     public static final BlockEntityType<TeslaCoilBlockEntity> TESLA_COIL_BLOCK_ENTITY_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE,
             new Identifier("tesla_coil", "tesla_coil"),
-            BlockEntityType.Builder.create(TeslaCoilBlockEntity::new, TESLA_COIL_BLOCK).build(null));
+            BlockEntityType.Builder.create(TeslaCoilBlockEntity::new, TESLA_COIL_TOP_LOAD_BLOCK).build(null));
 
     public static final EntityType<LightningArcEntity> LIGHTNING_ARC_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE,
             new Identifier(TeslaCoilMod.NAMESPACE, "lightning_arc"),

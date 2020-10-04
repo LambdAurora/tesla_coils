@@ -24,8 +24,50 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(RenderPhase.class)
 public interface RenderPhaseAccessor
 {
+    @Accessor("ADDITIVE_TRANSPARENCY")
+    static RenderPhase.Transparency getAdditiveTransparency()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
+    @Accessor("LIGHTNING_TRANSPARENCY")
+    static RenderPhase.Transparency getLightningTransparency()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
+    @Accessor("HALF_ALPHA")
+    static RenderPhase.Alpha getHalfAlpha()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
     @Accessor("SMOOTH_SHADE_MODEL")
     static RenderPhase.ShadeModel getSmoothShadeModel()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
+    @Accessor("ENABLE_LIGHTMAP")
+    static RenderPhase.Lightmap getEnableLightmap()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
+    @Accessor("ENABLE_OVERLAY_COLOR")
+    static RenderPhase.Overlay getEnableOverlayColor()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
+    @Accessor("ENABLE_DIFFUSE_LIGHTING")
+    static RenderPhase.DiffuseLighting getEnableDiffuseLighting()
+    {
+        throw new IllegalStateException("Injection failed.");
+    }
+
+    @Accessor("DISABLE_CULLING")
+    static RenderPhase.Cull getDisableCulling()
     {
         throw new IllegalStateException("Injection failed.");
     }
@@ -36,8 +78,8 @@ public interface RenderPhaseAccessor
         throw new IllegalStateException("Injection failed.");
     }
 
-    @Accessor("LIGHTNING_TRANSPARENCY")
-    static RenderPhase.Transparency getLightningTransparency()
+    @Accessor("BLACK_FOG")
+    static RenderPhase.Fog getBlackFog()
     {
         throw new IllegalStateException("Injection failed.");
     }

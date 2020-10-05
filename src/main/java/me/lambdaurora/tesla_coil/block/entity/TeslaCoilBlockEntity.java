@@ -19,6 +19,8 @@ package me.lambdaurora.tesla_coil.block.entity;
 
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -32,6 +34,7 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -41,6 +44,9 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
     private boolean enabled = false;
     private int age = 0;
     private int sideParticles = 0;
+
+    private Direction smallArcDirection = null;
+    private int smallArcCooldown = 0;
 
     public TeslaCoilBlockEntity()
     {
@@ -57,6 +63,12 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         return this.age;
     }
 
+    @Environment(EnvType.CLIENT)
+    public @Nullable Direction getSmallArcDirection()
+    {
+        return this.smallArcDirection;
+    }
+
     @Override
     public void tick()
     {
@@ -66,6 +78,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
             this.age++;
             if (this.world.isClient()) {
                 this.displaySideParticles();
+                this.rollNextSmallArcDirection();
             } else {
                 this.tryAttack();
             }
@@ -160,6 +173,28 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         }
 
         this.sideParticles++;
+    }
+
+    private void rollNextSmallArcDirection()
+    {
+        final int cooldown = 5;
+
+        if (this.smallArcCooldown > 0) {
+            if (this.smallArcCooldown < (cooldown - 1))
+                this.smallArcDirection = null;
+            this.smallArcCooldown--;
+            return;
+        }
+
+        int dirIndex = this.random.nextInt(20);
+        if (dirIndex < 6) {
+            this.smallArcDirection = Direction.values()[dirIndex];
+            if (this.smallArcDirection.getAxis().isVertical())
+                this.smallArcDirection = null;
+        } else
+            this.smallArcDirection = null;
+
+        this.smallArcCooldown = cooldown;
     }
 
     protected void tryAttack()

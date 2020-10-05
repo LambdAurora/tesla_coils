@@ -17,14 +17,21 @@
 
 package me.lambdaurora.tesla_coil.client;
 
+import me.lambdaurora.tesla_coil.TeslaCoilMod;
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import me.lambdaurora.tesla_coil.client.render.LightningArcEntityRenderer;
 import me.lambdaurora.tesla_coil.client.render.TeslaCoilBlockEntityRenderer;
+import me.lambdaurora.tesla_coil.mixin.client.RenderPhaseAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.util.Identifier;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Represents the Tesla Coils client mod.
@@ -36,6 +43,21 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 @Environment(EnvType.CLIENT)
 public class TeslaCoilClientMod implements ClientModInitializer
 {
+    public static final RenderPhase.Alpha ELECTRIC_ARC_ALPHA = new RenderPhase.Alpha(0.1f);
+
+    public static final RenderLayer SMALL_ELECTRIC_ARC_RENDER_LAYER = RenderLayer.of("tesla_coil_electric_arc", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+            GL11.GL_QUADS, 256, false, true,
+            RenderLayer.MultiPhaseParameters.builder()
+                    .texture(new RenderPhase.Texture(new Identifier(TeslaCoilMod.NAMESPACE, "textures/entity/electric_arc/random_small.png"), false, false))
+                    .fog(RenderPhaseAccessor.getBlackFog())
+                    .transparency(RenderPhaseAccessor.getLightningTransparency())
+                    .diffuseLighting(RenderPhaseAccessor.getEnableDiffuseLighting())
+                    .alpha(TeslaCoilClientMod.ELECTRIC_ARC_ALPHA)
+                    .cull(RenderPhaseAccessor.getDisableCulling())
+                    .lightmap(RenderPhaseAccessor.getEnableLightmap())
+                    .overlay(RenderPhaseAccessor.getEnableOverlayColor())
+                    .build(false));
+
     @Override
     public void onInitializeClient()
     {

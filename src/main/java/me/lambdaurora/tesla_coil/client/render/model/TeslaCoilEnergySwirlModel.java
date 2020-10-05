@@ -17,6 +17,8 @@
 
 package me.lambdaurora.tesla_coil.client.render.model;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.RenderLayer;
@@ -30,6 +32,7 @@ import net.minecraft.client.util.math.MatrixStack;
  * @version 1.0.0
  * @since 1.0.0
  */
+@Environment(EnvType.CLIENT)
 public class TeslaCoilEnergySwirlModel extends Model
 {
     private final ModelPart body;

@@ -3,8 +3,8 @@
 	"textures": {
 		"1": "tesla_coil:block/tpld",
 		"2": "tesla_coil:block/tesla_coil_secondary",
-		"3": "tesla_coil:block/tpld_vnla_top",
-		"particle": "tesla_coil:block/tpld_vnla_top"
+		"3": "tesla_coil:block/tpld_top",
+		"particle": "tesla_coil:block/tpld_top"
 	},
 	"elements": [
 		{

@@ -5,7 +5,8 @@
   "version": "${version}",
   "license": "LGPLv3",
   "authors": [
-    "LambdAurora"
+    "LambdAurora",
+	"march"
   ],
   "environment": "*",
   "entrypoints": {

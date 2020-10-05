@@ -180,8 +180,6 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         final int cooldown = 5;
 
         if (this.smallArcCooldown > 0) {
-            if (this.smallArcCooldown < (cooldown - 1))
-                this.smallArcDirection = null;
             this.smallArcCooldown--;
             return;
         }

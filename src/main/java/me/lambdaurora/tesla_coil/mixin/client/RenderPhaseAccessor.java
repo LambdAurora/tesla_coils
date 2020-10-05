@@ -36,8 +36,8 @@ public interface RenderPhaseAccessor
         throw new IllegalStateException("Injection failed.");
     }
 
-    @Accessor("HALF_ALPHA")
-    static RenderPhase.Alpha getHalfAlpha()
+    @Accessor("TRANSLUCENT_TRANSPARENCY")
+    static RenderPhase.Transparency getTranslucentTransparency()
     {
         throw new IllegalStateException("Injection failed.");
     }

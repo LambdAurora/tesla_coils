@@ -95,7 +95,7 @@ public class TeslaCoilBlockEntityRenderer extends BlockEntityRenderer<TeslaCoilB
             vec.transform(matrix);
 
             vertexConsumer.vertex(vec.getX(), vec.getY(), vec.getZ(),
-                    0.5f, 0.5f, 0.5f, 1.f,
+                    1.f, 1.f, 1.f, 0.75f,
                     vertices[start + 3], vertices[start + 4],
                     OverlayTexture.DEFAULT_UV,
                     15728880,

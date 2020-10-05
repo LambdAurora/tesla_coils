@@ -50,7 +50,7 @@ public class TeslaCoilClientMod implements ClientModInitializer
             RenderLayer.MultiPhaseParameters.builder()
                     .texture(new RenderPhase.Texture(new Identifier(TeslaCoilMod.NAMESPACE, "textures/entity/electric_arc/random_small.png"), false, false))
                     .fog(RenderPhaseAccessor.getBlackFog())
-                    .transparency(RenderPhaseAccessor.getLightningTransparency())
+                    .transparency(RenderPhaseAccessor.getTranslucentTransparency())
                     .diffuseLighting(RenderPhaseAccessor.getEnableDiffuseLighting())
                     .alpha(TeslaCoilClientMod.ELECTRIC_ARC_ALPHA)
                     .cull(RenderPhaseAccessor.getDisableCulling())

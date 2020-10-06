@@ -33,20 +33,19 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Represents the primary coil block.
+ * Represents the tesla coil top load block.
  *
  * @author LambdAurora
  * @version 1.0.0
  * @since 1.0.0
  */
-public class TeslaPrimaryCoilBlock extends Block implements BlockEntityProvider
+public class TeslaCoilTopLoadBlock extends Block implements BlockEntityProvider
 {
-    private static final VoxelShape COIL_SHAPE = Block.createCuboidShape(0, 3, 0, 16, 13, 16);
-    private static final VoxelShape SECONDARY_SHAPE = Block.createCuboidShape(6, 0, 6, 10, 3, 10);
-    private static final VoxelShape TOP_SHAPE = Block.createCuboidShape(7, 13, 7, 9, 14, 9);
-    private static final VoxelShape BASE_SHAPE = VoxelShapes.union(COIL_SHAPE, SECONDARY_SHAPE, TOP_SHAPE);
+    private static final VoxelShape LOAD_SHAPE = Block.createCuboidShape(0, 5, 0, 16, 11, 16);
+    private static final VoxelShape COIL_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 5, 11);
+    private static final VoxelShape BASE_SHAPE = VoxelShapes.union(LOAD_SHAPE, COIL_SHAPE);
 
-    public TeslaPrimaryCoilBlock(Settings settings)
+    public TeslaCoilTopLoadBlock(Settings settings)
     {
         super(settings);
     }

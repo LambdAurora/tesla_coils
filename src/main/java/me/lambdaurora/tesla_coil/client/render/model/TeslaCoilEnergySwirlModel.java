@@ -42,7 +42,7 @@ public class TeslaCoilEnergySwirlModel extends Model
         super(RenderLayer::getEntityCutoutNoCull);
 
         this.body = new ModelPart(this, 16, 16);
-        this.body.addCuboid(4.f, -39.f, 4.f, 8.f, 37.f, 8.f);
+        this.body.addCuboid(4.f, -39.f, 4.f, 8.f, 39.f, 8.f);
         this.body.setPivot(0.0F, 6.0F, 0.0F);
     }
 

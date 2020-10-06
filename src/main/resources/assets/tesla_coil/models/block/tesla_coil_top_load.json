@@ -1,5 +1,6 @@
 {
   "credit": "model made by .march",
+  "parent": "block/block",
   "textures": {
     "1": "tesla_coil:block/tesla_coil_top_load",
     "coil": "tesla_coil:block/tesla_coil_secondary",

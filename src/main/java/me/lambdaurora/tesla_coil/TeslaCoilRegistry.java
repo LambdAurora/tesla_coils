@@ -17,7 +17,7 @@
 
 package me.lambdaurora.tesla_coil;
 
-import me.lambdaurora.tesla_coil.block.TeslaPrimaryCoilBlock;
+import me.lambdaurora.tesla_coil.block.TeslaCoilTopLoadBlock;
 import me.lambdaurora.tesla_coil.block.TeslaSecondaryCoilBlock;
 import me.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
@@ -47,8 +47,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class TeslaCoilRegistry
 {
-    public static final TeslaPrimaryCoilBlock TESLA_COIL_TOP_LOAD_BLOCK = register("tesla_coil_top_load",
-            new TeslaPrimaryCoilBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD)
+    public static final TeslaCoilTopLoadBlock TESLA_COIL_TOP_LOAD_BLOCK = register("tesla_coil_top_load",
+            new TeslaCoilTopLoadBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD)
                     .strength(3.f)));
     public static final TeslaSecondaryCoilBlock TESLA_SECONDARY_COIL_BLOCK = register("tesla_coil_secondary",
             new TeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MaterialColor.GOLD)

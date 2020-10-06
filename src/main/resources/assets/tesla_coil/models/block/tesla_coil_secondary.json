@@ -1,5 +1,5 @@
 {
-  "__comment": "Model made by LambdAurora",
+  "credit": "Model made by LambdAurora",
   "parent": "block/block",
   "textures": {
     "coil": "tesla_coil:block/tesla_coil_secondary",

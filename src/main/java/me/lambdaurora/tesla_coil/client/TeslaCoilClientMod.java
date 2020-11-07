@@ -21,6 +21,7 @@ import me.lambdaurora.tesla_coil.TeslaCoilMod;
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import me.lambdaurora.tesla_coil.client.render.LightningArcEntityRenderer;
 import me.lambdaurora.tesla_coil.client.render.TeslaCoilBlockEntityRenderer;
+import me.lambdaurora.tesla_coil.mixin.client.EntityModelLayersAccessor;
 import me.lambdaurora.tesla_coil.mixin.client.RenderPhaseAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -29,9 +30,10 @@ import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegi
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Represents the Tesla Coils client mod.
@@ -46,7 +48,7 @@ public class TeslaCoilClientMod implements ClientModInitializer
     public static final RenderPhase.Alpha ELECTRIC_ARC_ALPHA = new RenderPhase.Alpha(0.1f);
 
     public static final RenderLayer SMALL_ELECTRIC_ARC_RENDER_LAYER = RenderLayer.of("tesla_coil_electric_arc", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
-            GL11.GL_QUADS, 256, false, true,
+            VertexFormat.DrawMode.QUADS, 256, false, true,
             RenderLayer.MultiPhaseParameters.builder()
                     .texture(new RenderPhase.Texture(new Identifier(TeslaCoilMod.NAMESPACE, "textures/entity/electric_arc/random_small.png"), false, false))
                     .fog(RenderPhaseAccessor.getBlackFog())
@@ -58,10 +60,14 @@ public class TeslaCoilClientMod implements ClientModInitializer
                     .overlay(RenderPhaseAccessor.getEnableOverlayColor())
                     .build(false));
 
+    public static final EntityModelLayer ENERGY_SWIRL_MODEL_LAYER = new EntityModelLayer(new Identifier(TeslaCoilMod.NAMESPACE, "energy_swirl"), "main");
+
     @Override
     public void onInitializeClient()
     {
         BlockEntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, TeslaCoilBlockEntityRenderer::new);
-        EntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, (dispatcher, context) -> new LightningArcEntityRenderer(dispatcher));
+        EntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, LightningArcEntityRenderer::new);
+
+        EntityModelLayersAccessor.getLayers().add(ENERGY_SWIRL_MODEL_LAYER);
     }
 }

@@ -30,15 +30,15 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
+public class TeslaCoilBlockEntity extends BlockEntity
 {
     private final Random random = new Random();
     private boolean enabled = false;
@@ -48,9 +48,9 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
     private Direction smallArcDirection = null;
     private int smallArcCooldown = 0;
 
-    public TeslaCoilBlockEntity()
+    public TeslaCoilBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE);
+        super(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, pos, state);
     }
 
     public boolean isEnabled()
@@ -69,26 +69,33 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         return this.smallArcDirection;
     }
 
-    @Override
-    public void tick()
+    public static void clientTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil)
     {
-        this.checkStructure();
+        teslaCoil.checkStructure();
 
-        if (this.enabled) {
-            this.age++;
-            if (this.world.isClient()) {
-                this.displaySideParticles();
-                this.rollNextSmallArcDirection();
-            } else {
-                this.tryAttack();
-            }
+        if (teslaCoil.isEnabled()) {
+            teslaCoil.age++;
+
+            teslaCoil.displaySideParticles();
+            teslaCoil.rollNextSmallArcDirection();
+        }
+    }
+
+    public static void serverTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil)
+    {
+        teslaCoil.checkStructure();
+
+        if (teslaCoil.isEnabled()) {
+            teslaCoil.age++;
+
+            teslaCoil.tryAttack();
         }
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag)
+    public void fromTag(CompoundTag tag)
     {
-        super.fromTag(state, tag);
+        super.fromTag(tag);
         this.enabled = tag.getBoolean("enabled");
     }
 
@@ -106,44 +113,45 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
             return;
         }
 
-        BlockPos.Mutable pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY() - 1, this.pos.getZ());
+        BlockPos.Mutable pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY(), this.pos.getZ());
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             BlockState state = this.world.getBlockState(pos);
 
-            if (i < 3) {
-                if (i < 2) {
-                    if (state.getBlock() != TeslaCoilRegistry.TESLA_SECONDARY_COIL_BLOCK) {
-                        this.enabled = false;
-                        return;
-                    }
-                } else if (state.getBlock() != Blocks.REDSTONE_BLOCK) {
+            if (i == 1) {
+                if (state.getBlock() != TeslaCoilRegistry.TESLA_PRIMARY_COIL_BLOCK) {
                     this.enabled = false;
                     return;
                 }
-
-                for (Direction direction : Direction.values()) {
-                    if (!direction.getAxis().isHorizontal())
-                        continue;
-
-                    pos.move(direction.getOffsetX(), 0, direction.getOffsetZ());
-
-                    state = this.world.getBlockState(pos);
-                    if (state.getBlock() != Blocks.IRON_BARS) {
-                        this.enabled = false;
-                        return;
-                    }
-
-                    pos.move(-direction.getOffsetX(), 0, -direction.getOffsetZ());
-                }
-            } else {
-                if (state.getBlock() != Blocks.EMERALD_BLOCK) {
+            } else if (i == 2) {
+                if (state.getBlock() != TeslaCoilRegistry.TESLA_SECONDARY_COIL_BLOCK) {
                     this.enabled = false;
                     return;
                 }
             }
 
-            pos.move(0, -1, 0);
+            for (Direction direction : Direction.values()) {
+                if (!direction.getAxis().isHorizontal())
+                    continue;
+
+                pos.move(direction);
+
+                state = this.world.getBlockState(pos);
+                if (state.getBlock() != Blocks.IRON_BARS) {
+                    this.enabled = false;
+                    return;
+                }
+
+                pos.move(direction.getOpposite());
+            }
+
+            pos.move(Direction.UP);
+        }
+
+        BlockState state = this.world.getBlockState(pos);
+        if (state.getBlock() != TeslaCoilRegistry.TESLA_COIL_TOP_LOAD_BLOCK) {
+            this.enabled = false;
+            return;
         }
 
         if (!this.enabled)
@@ -161,7 +169,7 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
             float xPos = this.pos.getX() + .5f;
             float zPos = this.pos.getZ() + .5f;
             float yOffset = this.sideParticles / 2.f / 3.f;
-            float yPos = this.pos.getY() - 3 + yOffset;
+            float yPos = this.pos.getY() + yOffset;
 
             for (Direction direction : Direction.values()) {
                 if (direction.getAxis().isHorizontal()) {
@@ -208,14 +216,14 @@ public class TeslaCoilBlockEntity extends BlockEntity implements Tickable
         targetPredicate.setPredicate(entity -> entity instanceof HostileEntity);
         LivingEntity entity = this.world.getClosestEntity(HostileEntity.class, targetPredicate, null,
                 x, y, z,
-                new Box(this.pos.getX() - 10, this.pos.getY() - 8, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 5, this.pos.getZ() + 10));
+                new Box(this.pos.getX() - 10, this.pos.getY() - 8, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 8, this.pos.getZ() + 10));
 
         if (entity != null) {
             LightningArcEntity lightningEntity = TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE.create(this.world);
 
             if (lightningEntity == null) return;
 
-            lightningEntity.setPos(x, y + 0.5, z);
+            lightningEntity.setPos(x, y + 3.5, z);
             lightningEntity.setTarget(entity.getBlockPos());
             lightningEntity.setTargetPredicate(targetPredicate);
 

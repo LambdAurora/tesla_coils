@@ -40,9 +40,6 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
-    include "com.github.lambdaurora:spruceui:${project.spruceui_version}"
-
     modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
 
     shadow("org.aperlambda:lambdajcommon:1.8.1") {

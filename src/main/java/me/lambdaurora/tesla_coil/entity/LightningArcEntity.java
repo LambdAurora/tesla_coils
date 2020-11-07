@@ -87,7 +87,7 @@ public class LightningArcEntity extends LightningEntity
 
         BlockPos target = this.getTarget();
         if (target == null) {
-            this.remove();
+            this.discard();
             return;
         }
 
@@ -103,7 +103,7 @@ public class LightningArcEntity extends LightningEntity
         if (ambientTick < 0) {
             int remainingActions = ((LightningEntityAccessor) this).getRemainingActions();
             if (remainingActions == 0) {
-                this.remove();
+                this.discard();
             } else if (ambientTick < -this.random.nextInt(10)) {
                 ((LightningEntityAccessor) this).setRemainingActions(remainingActions - 1);
                 ambientTick = 1;

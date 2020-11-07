@@ -3,7 +3,8 @@
   "package": "me.lambdaurora.tesla_coil.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.ClientPlayNetworkHandlerMixin",
+    "client.Class5600Mixin",
+    "client.EntityModelLayersAccessor",
     "client.RenderPhaseAccessor"
   ],
   "mixins": [

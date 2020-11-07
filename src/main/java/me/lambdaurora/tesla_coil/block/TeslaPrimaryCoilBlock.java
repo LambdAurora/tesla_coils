@@ -25,25 +25,16 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-/**
- * Represents the tesla coil top load block.
- *
- * @author LambdAurora
- * @version 1.0.0
- * @since 1.0.0
- */
-public class TeslaCoilTopLoadBlock extends Block
+public class TeslaPrimaryCoilBlock extends Block
 {
-    private static final VoxelShape LOAD_SHAPE = Block.createCuboidShape(0, 5, 0, 16, 11, 16);
-    private static final VoxelShape COIL_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 5, 11);
-    private static final VoxelShape BASE_SHAPE = VoxelShapes.union(LOAD_SHAPE, COIL_SHAPE);
+    private static final VoxelShape BASE_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 16, 11);
 
-    public TeslaCoilTopLoadBlock(Settings settings)
+    public TeslaPrimaryCoilBlock(Settings settings)
     {
         super(settings);
     }
@@ -69,7 +60,7 @@ public class TeslaCoilTopLoadBlock extends Block
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
     {
-        BlockPos controllerPos = pos.add(0, -3, 0);
+        BlockPos controllerPos = pos.offset(Direction.DOWN);
         BlockEntity blockEntity = world.getBlockEntity(controllerPos);
         if (!(blockEntity instanceof TeslaCoilBlockEntity))
             return;

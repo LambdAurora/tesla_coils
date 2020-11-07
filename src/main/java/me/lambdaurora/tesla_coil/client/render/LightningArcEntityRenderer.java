@@ -22,19 +22,16 @@ import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
 import me.lambdaurora.tesla_coil.mixin.client.RenderPhaseAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.class_5617;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Represents the lightning electric arc renderer.
@@ -48,7 +45,7 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
     private static final RenderLayer ELECTRIC_ARC = RenderLayer.of(
             TeslaCoilMod.NAMESPACE + "__lightning_arc",
             VertexFormats.POSITION_COLOR,
-            GL11.GL_QUADS,
+            VertexFormat.DrawMode.QUADS,
             256,
             false,
             true,
@@ -65,9 +62,9 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
     private static final float OPACITY = .75f;
     private static final float THICKNESS = .1f;
 
-    public LightningArcEntityRenderer(EntityRenderDispatcher dispatcher)
+    public LightningArcEntityRenderer(class_5617.class_5618 context)
     {
-        super(dispatcher);
+        super(context);
     }
 
     @Override
@@ -85,7 +82,11 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(ELECTRIC_ARC);
         Matrix4f matrix = matrices.peek().getModel();
 
-        segment(matrix, vertexConsumer, 0.f, 0.f, 0.f, MathHelper.abs(targetX), targetY, MathHelper.abs(targetZ));
+        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.f));
+
+        float distance = MathHelper.sqrt(targetX * targetX + targetZ * targetZ);
+
+        segment(matrix, vertexConsumer, 0.f, distance, 0.f, targetY);
 
         matrices.pop();
     }
@@ -95,22 +96,21 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
      *
      * @param matrix The matrix.
      * @param vertexConsumer The vertex consumer.
-     * @param x1 The first X-coordinate of the segment.
      * @param y1 The first Y-coordinate of the segment.
-     * @param x2 The second X-coordinate of the segment.
      * @param y2 The second Y-coordinate of the segment.
      */
-    private static void segment(Matrix4f matrix, VertexConsumer vertexConsumer, float x1, float y1, float z1, float x2, float y2, float z2)
+    private static void segment(Matrix4f matrix, VertexConsumer vertexConsumer, float start, float distance, float y1, float y2)
     {
+        float x2 = start + distance;
         float[] vertices = {
-                x1, y1 - THICKNESS, z1 - THICKNESS, // 0
-                x2, y2 - THICKNESS, z2 - THICKNESS, // 1
-                x2, y2 + THICKNESS, z2 - THICKNESS, // 2
-                x1, y1 + THICKNESS, z1 - THICKNESS, // 3
-                x1, y1 - THICKNESS, z1 + THICKNESS, // 4
-                x2, y2 - THICKNESS, z2 + THICKNESS, // 5
-                x2, y2 + THICKNESS, z2 + THICKNESS, // 6
-                x1, y1 + THICKNESS, z1 + THICKNESS // 7
+                start, y1 - THICKNESS, -THICKNESS, // 0
+                x2, y2 - THICKNESS, -THICKNESS, // 1
+                x2, y2 + THICKNESS, -THICKNESS, // 2
+                start, y1 + THICKNESS, -THICKNESS, // 3
+                start, y1 - THICKNESS, THICKNESS, // 4
+                x2, y2 - THICKNESS, THICKNESS, // 5
+                x2, y2 + THICKNESS, THICKNESS, // 6
+                start, y1 + THICKNESS, THICKNESS // 7
         };
 
         int[] indices = {

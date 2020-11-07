@@ -1,0 +1,36 @@
+{
+  "credit": "Model made by LambdAurora",
+  "parent": "block/block",
+  "textures": {
+    "coil": "tesla_coil:block/tesla_coil_secondary",
+    "primary": "minecraft:block/iron_block",
+    "particle": "tesla_coil:block/tesla_coil_secondary"
+  },
+  "elements": [
+    {
+      "name": "coil",
+      "from": [ 5, 2, 5 ],
+      "to": [ 11, 16, 11 ],
+      "faces": {
+        "north": {"uv": [ 0, 0, 6, 14 ], "texture": "#coil"},
+        "east":  {"uv": [ 0, 0, 6, 14 ], "texture": "#coil"},
+        "south": {"uv": [ 0, 0, 6, 14 ], "texture": "#coil"},
+        "west":  {"uv": [ 0, 0, 6, 14 ], "texture": "#coil"},
+        "up":    {"uv": [ 6, 0, 12, 6 ], "texture": "#coil", "cullface": "up"}
+      }
+    },
+    {
+      "name": "low_primary_coil",
+      "from": [ 3, 0, 3 ],
+      "to": [ 13, 2, 13 ],
+      "faces": {
+        "north": {"uv": [ 0, 0, 10, 2], "texture": "#primary"},
+        "east":  {"uv": [ 0, 0, 10, 2], "texture": "#primary"},
+        "south": {"uv": [ 0, 0, 10, 2], "texture": "#primary"},
+        "west":  {"uv": [ 0, 0, 10, 2], "texture": "#primary"},
+        "up":    {"uv": [ 0, 0, 10, 10], "texture": "#primary"},
+        "down":  {"uv": [ 0, 0, 10, 10], "texture": "#primary", "cullface": "down"}
+      }
+    }
+  ]
+}

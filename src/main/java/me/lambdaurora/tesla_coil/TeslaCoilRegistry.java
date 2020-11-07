@@ -37,6 +37,7 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -52,16 +53,20 @@ public final class TeslaCoilRegistry
 {
     public static final TeslaCoilTopLoadBlock TESLA_COIL_TOP_LOAD_BLOCK = register("tesla_coil_top_load",
             new TeslaCoilTopLoadBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
+                    .sounds(BlockSoundGroup.field_27204)
                     .strength(3.f)));
     public static final TeslaSecondaryCoilBlock TESLA_SECONDARY_COIL_BLOCK = register("tesla_coil_secondary",
             new TeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
+                    .sounds(BlockSoundGroup.field_27204)
                     .strength(2.5f)));
     public static final TeslaPrimaryCoilBlock TESLA_PRIMARY_COIL_BLOCK = register("tesla_coil_primary",
             new TeslaPrimaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
+                    .sounds(BlockSoundGroup.field_27204)
                     .strength(2.5f)));
     public static final TeslaCoilControllerBlock TESLA_COIL_CONTROLLER_BLOCK = register("tesla_coil_controller",
             new TeslaCoilControllerBlock(FabricBlockSettings.of(Material.METAL, MapColor.RED)
-                    .strength(2.5f)));
+                    .sounds(BlockSoundGroup.field_27204)
+                    .strength(3.f)));
 
     public static final BlockItem TESLA_COIL_TOP_LOAD_ITEM = register("tesla_coil_top_load", new BlockItem(TESLA_COIL_TOP_LOAD_BLOCK,
             new FabricItemSettings().group(ItemGroup.REDSTONE)));

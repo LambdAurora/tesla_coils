@@ -27,12 +27,16 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class TeslaPrimaryCoilBlock extends Block
 {
-    private static final VoxelShape BASE_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 16, 11);
+    private static final VoxelShape UPPER_SHAPE = Block.createCuboidShape(1, 10, 1, 15, 12, 15);
+    private static final VoxelShape MIDDLE_SHAPE = Block.createCuboidShape(2, 5, 2, 14, 10, 14);
+    private static final VoxelShape LOWER_SHAPE = Block.createCuboidShape(3, 0, 3, 13, 5, 13);
+    private static final VoxelShape FULL_SHAPE = VoxelShapes.union(TeslaSecondaryCoilBlock.BASE_SHAPE, UPPER_SHAPE, MIDDLE_SHAPE, LOWER_SHAPE);
 
     public TeslaPrimaryCoilBlock(Settings settings)
     {
@@ -42,19 +46,19 @@ public class TeslaPrimaryCoilBlock extends Block
     @Override
     public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos)
     {
-        return BASE_SHAPE;
+        return FULL_SHAPE;
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
     {
-        return BASE_SHAPE;
+        return FULL_SHAPE;
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context)
     {
-        return BASE_SHAPE;
+        return FULL_SHAPE;
     }
 
     @Override

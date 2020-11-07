@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 
 public class TeslaSecondaryCoilBlock extends Block
 {
-    private static final VoxelShape BASE_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 16, 11);
+    public static final VoxelShape BASE_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 16, 11);
 
     public TeslaSecondaryCoilBlock(Settings settings)
     {

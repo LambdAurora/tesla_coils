@@ -92,10 +92,8 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
         double angle = Math.atan2(targetX, targetZ) - (Math.PI / 2.0);
         matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion((float) angle));
 
-        if (targetY < 0) {
-            matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.f));
-            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180.f));
-        }
+        if (targetY < 0)
+            matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.f));
 
         int steps = 1;
         if (distance > 1.f) steps = (int) Math.floor(Math.max(distance - 1, 2));

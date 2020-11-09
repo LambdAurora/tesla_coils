@@ -33,6 +33,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Matrix4f;
 
+import java.util.Random;
+
 /**
  * Represents the lightning electric arc renderer.
  *
@@ -45,7 +47,7 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
     private static final RenderLayer ELECTRIC_ARC = RenderLayer.of(
             TeslaCoilMod.NAMESPACE + "__lightning_arc",
             VertexFormats.POSITION_COLOR,
-            VertexFormat.DrawMode.QUADS,
+            VertexFormat.DrawMode.TRIANGLES,
             256,
             false,
             true,
@@ -73,6 +75,8 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
         BlockPos target = entity.getTarget();
         if (target == null) return;
 
+        Random random = new Random(entity.getEntityId() + entity.age / 2);
+
         float targetX = (float) (target.getX() + .5 - entity.getX());
         float targetY = (float) (target.getY() + .5 - entity.getY());
         float targetZ = (float) (target.getZ() + .5 - entity.getZ());
@@ -82,11 +86,38 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
         VertexConsumer vertexConsumer = vertexConsumers.getBuffer(ELECTRIC_ARC);
         Matrix4f matrix = matrices.peek().getModel();
 
-        matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90.f));
-
         float distance = MathHelper.sqrt(targetX * targetX + targetZ * targetZ);
+        float deltaY = Math.abs(targetY);
 
-        segment(matrix, vertexConsumer, 0.f, distance, 0.f, targetY);
+        double angle = Math.atan2(targetX, targetZ) - (Math.PI / 2.0);
+        matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion((float) angle));
+
+        if (targetY < 0) {
+            matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180.f));
+            matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180.f));
+        }
+
+        int steps = 1;
+        if (distance > 1.f) steps = (int) Math.floor(Math.max(distance - 1, 2));
+        float zOffset = 0;
+        float start = 0.f;
+        float currentY = 0.f;
+        final float step = distance / steps;
+        final float yStep = deltaY / steps;
+        for (int i = 0; i < steps; i++) {
+            float previousZOffset = zOffset;
+            boolean end = i == steps - 1;
+            if (end)
+                zOffset = 0.f;
+            else
+                zOffset = MathHelper.clamp((random.nextBoolean() ? 1.f : -1.f) * random.nextFloat(), -.5f, .5f);
+            float nextY = deltaY;
+            if (!end)
+                nextY = (i + 1) * yStep + MathHelper.clamp((random.nextBoolean() ? 1.f : -1.f) * random.nextFloat(), -.35f, .35f);
+            segment(matrix, vertexConsumer, start, step, currentY, nextY, previousZOffset, zOffset, i == 0, end);
+            start += step;
+            currentY = nextY;
+        }
 
         matrices.pop();
     }
@@ -99,31 +130,48 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
      * @param y1 The first Y-coordinate of the segment.
      * @param y2 The second Y-coordinate of the segment.
      */
-    private static void segment(Matrix4f matrix, VertexConsumer vertexConsumer, float start, float distance, float y1, float y2)
+    private static void segment(Matrix4f matrix, VertexConsumer vertexConsumer, float start, float distance, float y1, float y2, float startZOffset, float endZOffset,
+                                boolean drawStart, boolean drawEnd)
     {
         float x2 = start + distance;
         float[] vertices = {
-                start, y1 - THICKNESS, -THICKNESS, // 0
-                x2, y2 - THICKNESS, -THICKNESS, // 1
-                x2, y2 + THICKNESS, -THICKNESS, // 2
-                start, y1 + THICKNESS, -THICKNESS, // 3
-                start, y1 - THICKNESS, THICKNESS, // 4
-                x2, y2 - THICKNESS, THICKNESS, // 5
-                x2, y2 + THICKNESS, THICKNESS, // 6
-                start, y1 + THICKNESS, THICKNESS // 7
+                /* BOTTOM */
+                start, y1 - THICKNESS, startZOffset - THICKNESS, // 0
+                x2, y2 - THICKNESS, endZOffset - THICKNESS, // 1
+                x2, y2 - THICKNESS, endZOffset + THICKNESS, // 2
+                start, y1 - THICKNESS, startZOffset + THICKNESS, // 3
+                /* TOP */
+                start, y1 + THICKNESS, startZOffset - THICKNESS, // 4
+                x2, y2 + THICKNESS, endZOffset - THICKNESS, // 5
+                x2, y2 + THICKNESS, endZOffset + THICKNESS, // 6
+                start, y1 + THICKNESS, startZOffset + THICKNESS // 7
         };
 
         int[] indices = {
-                5, 1, 2, 6,
-                0, 4, 7, 3,
-                5, 4, 0, 2,
-                2, 3, 7, 6,
-                1, 0, 3, 2,
-                4, 5, 6, 7
+                /* BOTTOM FACE */
+                0, 2, 3,
+                0, 1, 2,
+                /* END FACE */
+                6, 2, 1,
+                1, 5, 6,
+                /* EAST FACE */
+                4, 5, 0,
+                5, 1, 0,
+                /* START FACE */
+                0, 3, 7,
+                7, 4, 0,
+                /* WEST FACE */
+                3, 6, 7,
+                3, 2, 6,
+                /* TOP FACE */
+                7, 6, 4,
+                6, 5, 4
         };
 
-        for (int i : indices) {
-            i *= 3;
+        for (int iIndex = 0; iIndex < indices.length; iIndex++) {
+            if ((!drawStart && iIndex >= 18 && iIndex <= 23) || (!drawEnd && iIndex >= 6 && iIndex <= 11))
+                continue;
+            int i = indices[iIndex] * 3;
             vertex(vertexConsumer, matrix, vertices[i], vertices[i + 1], vertices[i + 2]);
         }
     }

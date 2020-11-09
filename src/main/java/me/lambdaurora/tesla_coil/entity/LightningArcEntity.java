@@ -26,6 +26,7 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -120,7 +121,11 @@ public class LightningArcEntity extends LightningEntity
 
             for (Entity entity : list) {
                 if (entity instanceof LivingEntity && targetPredicate.test(null, (LivingEntity) entity)) {
-                    entity.onStruckByLightning((ServerWorld) this.world, this);
+                    if (entity instanceof IronGolemEntity) {
+                        ((IronGolemEntity) entity).heal(1.f);
+                    } else {
+                        entity.onStruckByLightning((ServerWorld) this.world, this);
+                    }
                 }
             }
         }

@@ -120,7 +120,7 @@ public class LightningArcEntity extends LightningEntity
                     Entity::isAlive);
 
             for (Entity entity : list) {
-                if (entity instanceof LivingEntity && targetPredicate.test(null, (LivingEntity) entity)) {
+                if (entity instanceof LivingEntity && this.targetPredicate.test(null, (LivingEntity) entity)) {
                     if (entity instanceof IronGolemEntity) {
                         ((IronGolemEntity) entity).heal(1.f);
                     } else {

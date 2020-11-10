@@ -1,14 +1,57 @@
 {
   "credit": "Model made by LambdAurora",
-  "parent": "block/cube",
-
+  "parent": "block/block",
   "textures": {
-    "north": "tesla_coil:block/tesla_coil_controller_side",
-    "south": "tesla_coil:block/tesla_coil_controller_side",
-    "east": "tesla_coil:block/tesla_coil_controller_side",
-    "west": "tesla_coil:block/tesla_coil_controller_side",
-    "up": "tesla_coil:block/tesla_coil_controller_top",
-    "down": "tesla_coil:block/tesla_coil_controller_bottom",
+    "side": "tesla_coil:block/tesla_coil_controller_side",
+    "side_overlay": "tesla_coil:block/tesla_coil_controller_side_overlay",
+    "top": "tesla_coil:block/tesla_coil_controller_top",
+    "top_overlay": "tesla_coil:block/tesla_coil_controller_top_overlay",
+    "bottom": "tesla_coil:block/tesla_coil_controller_bottom",
+    "bottom_overlay": "tesla_coil:block/tesla_coil_controller_bottom_overlay",
     "particle": "tesla_coil:block/tesla_coil_controller_side"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "north": {"uv": [ 0, 0, 16, 16 ], "texture": "#side", "cullface": "north"},
+        "east":  {"uv": [ 0, 0, 16, 16 ], "texture": "#side", "cullface": "east"},
+        "south": {"uv": [ 0, 0, 16, 16 ], "texture": "#side", "cullface": "south"},
+        "west":  {"uv": [ 0, 0, 16, 16 ], "texture": "#side", "cullface": "west"},
+        "up":    {"uv": [ 0, 0, 16, 16 ], "texture": "#top", "cullface": "up"},
+        "down":  {"uv": [ 0, 0, 16, 16 ], "texture": "#bottom", "cullface": "down"}
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "north": {"uv": [ 0, 0, 16, 16 ], "texture": "#side_overlay", "cullface": "north", "jmx_tex0": "#side_overlay", "jmx_material": "#jmx_0"},
+        "east":  {"uv": [ 0, 0, 16, 16 ], "texture": "#side_overlay", "cullface": "east", "jmx_tex0": "#side_overlay", "jmx_material": "#jmx_0"},
+        "south": {"uv": [ 0, 0, 16, 16 ], "texture": "#side_overlay", "cullface": "south", "jmx_tex0": "#side_overlay", "jmx_material": "#jmx_0"},
+        "west":  {"uv": [ 0, 0, 16, 16 ], "texture": "#side_overlay", "cullface": "west", "jmx_tex0": "#side_overlay", "jmx_material": "#jmx_0"},
+        "up":    {"uv": [ 0, 0, 16, 16 ], "texture": "#top_overlay", "cullface": "up", "jmx_tex0": "#top_overlay", "jmx_material": "#jmx_0"},
+        "down":  {"uv": [ 0, 0, 16, 16 ], "texture": "#bottom_overlay", "cullface": "down", "jmx_tex0": "#bottom_overlay", "jmx_material": "#jmx_0"}
+      }
+    }
+  ],
+  "jmx": {
+    "textures": {
+      "side": "tesla_coil:block/tesla_coil_controller_side",
+      "side_overlay": "tesla_coil:block/tesla_coil_controller_side_overlay",
+      "top": "tesla_coil:block/tesla_coil_controller_top",
+      "top_overlay": "tesla_coil:block/tesla_coil_controller_top_overlay",
+      "bottom": "tesla_coil:block/tesla_coil_controller_bottom",
+      "particle": "tesla_coil:block/tesla_coil_controller_side"
+    },
+    "materials": {
+      "jmx_0": {
+        "layer0": "cutout",
+        "emissive0": true,
+        "ambient_occlusion0": false,
+        "diffuse0": false
+      }
+    }
   }
 }

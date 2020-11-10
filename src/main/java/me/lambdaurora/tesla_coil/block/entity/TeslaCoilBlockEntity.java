@@ -26,8 +26,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.particle.ParticleTypes;
@@ -214,7 +213,8 @@ public class TeslaCoilBlockEntity extends BlockEntity
         double z = this.getPos().getZ() + 0.5;
 
         TargetPredicate targetPredicate = new TargetPredicate();
-        targetPredicate.setPredicate(entity -> entity instanceof HostileEntity || (entity instanceof IronGolemEntity && entity.getHealth() < entity.getMaxHealth() - 1.f));
+        targetPredicate.setPredicate(entity -> entity instanceof Monster
+                || (entity instanceof IronGolemEntity && entity.getHealth() < entity.getMaxHealth() - 1.f));
         LivingEntity entity = this.world.getClosestEntity(LivingEntity.class, targetPredicate, null,
                 x, y, z,
                 new Box(this.pos.getX() - 10, this.pos.getY() - 8, this.pos.getZ() - 10, this.pos.getX() + 10, this.pos.getY() + 8, this.pos.getZ() + 10));

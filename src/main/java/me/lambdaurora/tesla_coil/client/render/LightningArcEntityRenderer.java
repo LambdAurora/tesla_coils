@@ -63,6 +63,26 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
     private static final float BLUE = .9f;
     private static final float OPACITY = .75f;
     private static final float THICKNESS = .1f;
+    private static final int[] INDICES = {
+            /* BOTTOM FACE */
+            0, 2, 3,
+            0, 1, 2,
+            /* END FACE */
+            6, 2, 1,
+            1, 5, 6,
+            /* EAST FACE */
+            4, 5, 0,
+            5, 1, 0,
+            /* START FACE */
+            0, 3, 7,
+            7, 4, 0,
+            /* WEST FACE */
+            3, 6, 7,
+            3, 2, 6,
+            /* TOP FACE */
+            7, 6, 4,
+            6, 5, 4
+    };
 
     public LightningArcEntityRenderer(class_5617.class_5618 context)
     {
@@ -145,31 +165,10 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
                 start, y1 + THICKNESS, startZOffset + THICKNESS // 7
         };
 
-        int[] indices = {
-                /* BOTTOM FACE */
-                0, 2, 3,
-                0, 1, 2,
-                /* END FACE */
-                6, 2, 1,
-                1, 5, 6,
-                /* EAST FACE */
-                4, 5, 0,
-                5, 1, 0,
-                /* START FACE */
-                0, 3, 7,
-                7, 4, 0,
-                /* WEST FACE */
-                3, 6, 7,
-                3, 2, 6,
-                /* TOP FACE */
-                7, 6, 4,
-                6, 5, 4
-        };
-
-        for (int iIndex = 0; iIndex < indices.length; iIndex++) {
+        for (int iIndex = 0; iIndex < INDICES.length; iIndex++) {
             if ((!drawStart && iIndex >= 18 && iIndex <= 23) || (!drawEnd && iIndex >= 6 && iIndex <= 11))
                 continue;
-            int i = indices[iIndex] * 3;
+            int i = INDICES[iIndex] * 3;
             vertex(vertexConsumer, matrix, vertices[i], vertices[i + 1], vertices[i + 2]);
         }
     }

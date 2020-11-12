@@ -20,10 +20,10 @@ package me.lambdaurora.tesla_coil.mixin.client;
 import com.google.common.collect.ImmutableMap;
 import me.lambdaurora.tesla_coil.client.TeslaCoilClientMod;
 import me.lambdaurora.tesla_coil.client.render.model.TeslaCoilEnergySwirlModel;
-import net.minecraft.class_5600;
-import net.minecraft.class_5607;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModels;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,11 +32,11 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
 
-@Mixin(class_5600.class)
-public class Class5600Mixin
+@Mixin(EntityModels.class)
+public class EntityModelsMixin
 {
     @Inject(
-            method = "method_32073",
+            method = "getModels",
             at = @At(
                     value = "INVOKE",
                     target = "Lcom/google/common/collect/ImmutableMap$Builder;put(Ljava/lang/Object;Ljava/lang/Object;)Lcom/google/common/collect/ImmutableMap$Builder;",
@@ -44,7 +44,7 @@ public class Class5600Mixin
             ),
             locals = LocalCapture.CAPTURE_FAILHARD
     )
-    private static void onModelBuilding(CallbackInfoReturnable<Map<EntityModelLayer, ModelPart>> cir, ImmutableMap.Builder<EntityModelLayer, class_5607> builder)
+    private static void onModelBuilding(CallbackInfoReturnable<Map<EntityModelLayer, ModelPart>> cir, ImmutableMap.Builder<EntityModelLayer, TexturedModelData> builder)
     {
         builder.put(TeslaCoilClientMod.ENERGY_SWIRL_MODEL_LAYER, TeslaCoilEnergySwirlModel.buildModel());
     }

@@ -19,9 +19,7 @@ package me.lambdaurora.tesla_coil.client.render.model;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.*;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -44,12 +42,18 @@ public class TeslaCoilEnergySwirlModel extends Model
         this.body = body;
     }
 
-    public static class_5607 buildModel()
+    public static TexturedModelData buildModel()
     {
-        class_5609 lv = new class_5609();
-        class_5610 lv2 = lv.method_32111();
-        lv2.method_32117("body", class_5606.method_32108().method_32101(16, 16).method_32097(4.f, 10.f, 4.f, 8.f, 39.f, 8.f), class_5603.method_32090(0.f, 6.f, 0.f));
-        return class_5607.method_32110(lv, 64, 32);
+        ModelData data = new ModelData();
+        ModelPartData root = data.getRoot();
+        root.addChild(
+                "body",
+                ModelPartBuilder.create()
+                        .uv(16, 16)
+                        .cuboid(4.f, 10.f, 4.f, 8.f, 39.f, 8.f),
+                ModelTransform.pivot(0.f, 6.f, 0.f)
+        );
+        return TexturedModelData.of(data, 64, 32);
     }
 
     @Override

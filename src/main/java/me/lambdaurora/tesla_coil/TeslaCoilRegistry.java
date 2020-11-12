@@ -53,19 +53,19 @@ public final class TeslaCoilRegistry
 {
     public static final TeslaCoilTopLoadBlock TESLA_COIL_TOP_LOAD_BLOCK = register("tesla_coil_top_load",
             new TeslaCoilTopLoadBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
-                    .sounds(BlockSoundGroup.field_27204)
+                    .sounds(BlockSoundGroup.COPPER)
                     .strength(3.f)));
     public static final TeslaSecondaryCoilBlock TESLA_SECONDARY_COIL_BLOCK = register("tesla_coil_secondary",
             new TeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
-                    .sounds(BlockSoundGroup.field_27204)
+                    .sounds(BlockSoundGroup.COPPER)
                     .strength(2.5f)));
     public static final TeslaPrimaryCoilBlock TESLA_PRIMARY_COIL_BLOCK = register("tesla_coil_primary",
             new TeslaPrimaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
-                    .sounds(BlockSoundGroup.field_27204)
+                    .sounds(BlockSoundGroup.COPPER)
                     .strength(2.5f)));
     public static final TeslaCoilControllerBlock TESLA_COIL_CONTROLLER_BLOCK = register("tesla_coil_controller",
             new TeslaCoilControllerBlock(FabricBlockSettings.of(Material.METAL, MapColor.RED)
-                    .sounds(BlockSoundGroup.field_27204)
+                    .sounds(BlockSoundGroup.COPPER)
                     .strength(3.f)));
 
     public static final BlockItem TESLA_COIL_TOP_LOAD_ITEM = register("tesla_coil_top_load", new BlockItem(TESLA_COIL_TOP_LOAD_BLOCK,

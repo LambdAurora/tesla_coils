@@ -47,7 +47,7 @@ public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCo
     private static final Identifier ENERGY_SWIRL_TEXTURE = new Identifier("textures/entity/creeper/creeper_armor.png");
     private final TeslaCoilEnergySwirlModel model;
 
-    public TeslaCoilBlockEntityRenderer(BlockEntityRendererFactory.Arguments context)
+    public TeslaCoilBlockEntityRenderer(BlockEntityRendererFactory.Context context)
     {
         this.model = new TeslaCoilEnergySwirlModel(context.getLayerModelPart(TeslaCoilClientMod.ENERGY_SWIRL_MODEL_LAYER));
     }

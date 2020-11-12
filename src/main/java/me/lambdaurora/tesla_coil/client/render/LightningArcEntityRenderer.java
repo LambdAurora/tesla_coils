@@ -22,9 +22,9 @@ import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
 import me.lambdaurora.tesla_coil.mixin.client.RenderPhaseAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.class_5617;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -84,7 +84,7 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
             6, 5, 4
     };
 
-    public LightningArcEntityRenderer(class_5617.class_5618 context)
+    public LightningArcEntityRenderer(EntityRendererFactory.Context context)
     {
         super(context);
     }

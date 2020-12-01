@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "tesla_coil:waxed_secondary_coil"
+      "tesla_coil:waxed_tesla_secondary_coil"
     ]
   },
   "criteria": {

@@ -24,8 +24,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -33,16 +31,16 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class TeslaPrimaryCoilBlock extends Block
+public class TeslaPrimaryCoilBlock extends WeatherableTeslaCoilPartBlock
 {
     private static final VoxelShape UPPER_SHAPE = Block.createCuboidShape(1, 10, 1, 15, 12, 15);
     private static final VoxelShape MIDDLE_SHAPE = Block.createCuboidShape(2, 5, 2, 14, 10, 14);
     private static final VoxelShape LOWER_SHAPE = Block.createCuboidShape(3, 0, 3, 13, 5, 13);
     private static final VoxelShape FULL_SHAPE = VoxelShapes.union(TeslaSecondaryCoilBlock.BASE_SHAPE, UPPER_SHAPE, MIDDLE_SHAPE, LOWER_SHAPE);
 
-    public TeslaPrimaryCoilBlock(Settings settings)
+    public TeslaPrimaryCoilBlock(Settings settings, int weathered)
     {
-        super(settings);
+        super(settings, weathered);
     }
 
     @Override

@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "tesla_coil:waxed_lightly_weathered_tesla_secondary_coil"
+      "tesla_coil:repair_weathered_tesla_secondary_coil"
     ]
   },
   "criteria": {
@@ -11,17 +11,17 @@
       "conditions": {
         "items": [
           {
-            "item": "tesla_coil:lightly_weathered_tesla_secondary_coil"
+            "item": "tesla_coil:tesla_secondary_coil"
           }
         ]
       }
     },
-    "has_honeycomb": {
+    "has_weathered_secondary_coil": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:honeycomb"
+            "item": "tesla_coil:weathered_tesla_secondary_coil"
           }
         ]
       }
@@ -29,14 +29,14 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tesla_coil:waxed_lightly_weathered_tesla_secondary_coil"
+        "recipe": "tesla_coil:repair_weathered_tesla_secondary_coil"
       }
     }
   },
   "requirements": [
     [
       "has_secondary_coil",
-      "has_honeycomb",
+      "has_weathered_secondary_coil",
       "has_the_recipe"
     ]
   ]

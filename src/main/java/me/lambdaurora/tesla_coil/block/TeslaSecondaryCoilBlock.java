@@ -30,25 +30,13 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class TeslaSecondaryCoilBlock extends Block
+public class TeslaSecondaryCoilBlock extends WeatherableTeslaCoilPartBlock
 {
     public static final VoxelShape BASE_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 16, 11);
-    private final int weathered;
 
     public TeslaSecondaryCoilBlock(Settings settings, int weathered)
     {
-        super(settings);
-        this.weathered = weathered;
-    }
-
-    /**
-     * Gets the weathered state of this block.
-     *
-     * @return the weathered state of this block between 0 and 4
-     */
-    public int getWeathered()
-    {
-        return this.weathered;
+        super(settings, weathered);
     }
 
     @Override

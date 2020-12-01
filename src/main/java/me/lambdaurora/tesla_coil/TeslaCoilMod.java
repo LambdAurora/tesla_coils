@@ -24,9 +24,14 @@ import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tag.Tag;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 
 public class TeslaCoilMod implements ModInitializer
 {
@@ -46,7 +51,16 @@ public class TeslaCoilMod implements ModInitializer
         if (blockEntity.isEnabled()) {
             if (entity instanceof ItemEntity && ((ItemEntity) entity).getStack().isIn(TeslaCoilMod.TESLA_COIL_IMMUNE_ITEMS))
                 return;
-            entity.damage(TeslaCoilMod.TESLA_COIL_DAMAGE, TeslaCoilMod.TESLA_COIL_COMPONENTS_ACTIVE_DAMAGE);
+            float totalDamage = TeslaCoilMod.TESLA_COIL_COMPONENTS_ACTIVE_DAMAGE * blockEntity.getDamageMultiplier();
+            float damage = totalDamage;
+            for (ItemStack stack : entity.getArmorItems())
+                if (!stack.isEmpty() && stack.getItem() instanceof ArmorItem) {
+                    ArmorItem armor = (ArmorItem) stack.getItem();
+                    if (armor.getMaterial() == ArmorMaterials.LEATHER) {
+                        damage = Math.max(0.f, damage - (totalDamage / 4.f));
+                    }
+                }
+            entity.damage(TeslaCoilMod.TESLA_COIL_DAMAGE, damage);
         }
     }
 }

@@ -9,13 +9,13 @@
     "has_secondary": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tesla_coil:secondary_coil"
+        "recipe": "tesla_coil:tesla_secondary_coil"
       }
     },
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tesla_coil:primary_coil"
+        "recipe": "tesla_coil:tesla_primary_coil"
       }
     }
   },

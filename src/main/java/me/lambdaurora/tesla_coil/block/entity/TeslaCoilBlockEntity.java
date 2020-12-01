@@ -18,12 +18,16 @@
 package me.lambdaurora.tesla_coil.block.entity;
 
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
+import me.lambdaurora.tesla_coil.block.TeslaPrimaryCoilBlock;
 import me.lambdaurora.tesla_coil.block.TeslaSecondaryCoilBlock;
+import me.lambdaurora.tesla_coil.block.WeatherableTeslaCoilPartBlock;
 import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Oxidizable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -44,9 +48,14 @@ public class TeslaCoilBlockEntity extends BlockEntity
     private final Random random = new Random();
     private int power = 0;
     private int age = 0;
-    private int sideParticles = 0;
+    private long nextOxidation;
+    private float effectiveness = 1.f;
 
+    @Environment(EnvType.CLIENT)
+    private int sideParticles = 0;
+    @Environment(EnvType.CLIENT)
     private Direction smallArcDirection = null;
+    @Environment(EnvType.CLIENT)
     private int smallArcCooldown = 0;
 
     public TeslaCoilBlockEntity(BlockPos pos, BlockState state)
@@ -64,6 +73,26 @@ public class TeslaCoilBlockEntity extends BlockEntity
         return this.power;
     }
 
+    /**
+     * Returns the effectiveness of this tesla coil. Effectiveness is a number between 0 and 1 representing a percentage.
+     *
+     * @return the effectiveness
+     */
+    public float getEffectiveness()
+    {
+        return this.effectiveness;
+    }
+
+    public float getPowerDamageMultiplier()
+    {
+        return this.getPower() <= 2 ? 1.f : 1.25f;
+    }
+
+    public float getDamageMultiplier()
+    {
+        return this.getPowerDamageMultiplier() * this.getEffectiveness();
+    }
+
     public int getAge()
     {
         return this.age;
@@ -75,9 +104,10 @@ public class TeslaCoilBlockEntity extends BlockEntity
         return this.smallArcDirection;
     }
 
+    @Environment(EnvType.CLIENT)
     public static void clientTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil)
     {
-        teslaCoil.checkStructure();
+        teslaCoil.checkStructure(world);
 
         if (teslaCoil.isEnabled()) {
             teslaCoil.age++;
@@ -89,12 +119,23 @@ public class TeslaCoilBlockEntity extends BlockEntity
 
     public static void serverTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil)
     {
-        teslaCoil.checkStructure();
+        int lastPower = teslaCoil.getPower();
+        teslaCoil.checkStructure(world);
+        if (lastPower != teslaCoil.getPower())
+            teslaCoil.markDirty();
 
         if (teslaCoil.isEnabled()) {
+            if (lastPower == 0) {
+                teslaCoil.pickNextOxidationTime(world);
+            }
+
             teslaCoil.age++;
 
             teslaCoil.tryAttack();
+            if (teslaCoil.getPower() > 1)
+                teslaCoil.oxidationTick(world);
+        } else {
+            teslaCoil.age = 0;
         }
     }
 
@@ -103,6 +144,7 @@ public class TeslaCoilBlockEntity extends BlockEntity
     {
         super.fromTag(tag);
         this.power = tag.getInt("power");
+        this.nextOxidation = tag.getLong("next_oxidation");
     }
 
     @Override
@@ -110,12 +152,23 @@ public class TeslaCoilBlockEntity extends BlockEntity
     {
         tag = super.toTag(tag);
         tag.putInt("power", this.power);
+        tag.putLong("next_oxidation", this.nextOxidation);
         return tag;
     }
 
-    protected void checkStructure()
+    protected void pickNextOxidationTime(World world)
     {
-        if (this.world.getTime() % 80L != 0L) {
+        int randomOffset = this.random.nextInt(24000 * 2);
+        if (this.random.nextBoolean())
+            randomOffset = -randomOffset;
+
+        this.nextOxidation = world.getTime() + (24000 * 15) + randomOffset; // 15 Minecraft Days +/- 2 (random) Minecraft Days
+        this.markDirty();
+    }
+
+    protected void checkStructure(World world)
+    {
+        if (world.getTime() % 80L != 0L) {
             return;
         }
 
@@ -128,15 +181,15 @@ public class TeslaCoilBlockEntity extends BlockEntity
 
         // Primary coil
         pos.move(Direction.UP);
-        BlockState state = this.world.getBlockState(pos);
-        if (state.getBlock() != TeslaCoilRegistry.TESLA_PRIMARY_COIL_BLOCK || !this.checkForIronBars(pos)) {
+        BlockState state = world.getBlockState(pos);
+        if (!(state.getBlock() instanceof TeslaPrimaryCoilBlock) || !this.checkForIronBars(pos) || ((TeslaPrimaryCoilBlock) state.getBlock()).getWeathered() >= 3) {
             this.power = 0;
             return;
         }
 
         pos.move(Direction.UP);
         this.power = 1;
-        while ((state = this.world.getBlockState(pos)).getBlock() instanceof TeslaSecondaryCoilBlock && this.checkForIronBars(pos) && power < 3) {
+        while ((state = world.getBlockState(pos)).getBlock() instanceof TeslaSecondaryCoilBlock && this.checkForIronBars(pos) && power < 3) {
             if (((TeslaSecondaryCoilBlock) state.getBlock()).getWeathered() >= 3) {
                 this.power = 0;
                 return;
@@ -150,8 +203,46 @@ public class TeslaCoilBlockEntity extends BlockEntity
             return;
         }
 
-        if (!this.isEnabled())
-            this.age = 0;
+        // The tesla coil is still working. Getting its effectiveness.
+        float effectiveness = 0.f;
+        pos.set(this.pos).move(Direction.UP);
+        for (int i = 0; i < this.power; i++) {
+            state = world.getBlockState(pos);
+
+            Block block = state.getBlock();
+            if (block instanceof WeatherableTeslaCoilPartBlock) {
+                WeatherableTeslaCoilPartBlock part = (WeatherableTeslaCoilPartBlock) block;
+
+                effectiveness += ((3.f - part.getWeathered()) / 3.f) / this.getPower();
+            }
+
+            pos.move(Direction.UP);
+        }
+        this.effectiveness = effectiveness;
+    }
+
+    private void oxidationTick(World world)
+    {
+        if (world.isSkyVisible(this.pos.up(1 + this.power)) && world.isRaining()) {
+            this.nextOxidation -= 5;
+        }
+
+        if ((this.nextOxidation - world.getTime()) <= 0) {
+            this.oxidize(world);
+            this.pickNextOxidationTime(world);
+        }
+    }
+
+    private void oxidize(World world)
+    {
+        int yOffset = Math.max(1, this.random.nextInt(this.power + 1));
+        System.out.println(yOffset);
+        BlockPos pos = this.pos.up(yOffset);
+        BlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (block instanceof WeatherableTeslaCoilPartBlock && block instanceof Oxidizable) {
+            world.setBlockState(pos, ((Oxidizable) state.getBlock()).getOxidationResult(state));
+        }
     }
 
     private boolean checkForIronBars(BlockPos.Mutable pos)
@@ -173,6 +264,7 @@ public class TeslaCoilBlockEntity extends BlockEntity
         return true;
     }
 
+    @Environment(EnvType.CLIENT)
     protected void displaySideParticles()
     {
         if (this.sideParticles > 18 || (this.power % 2 != 0 && this.sideParticles > 17)) {
@@ -197,6 +289,7 @@ public class TeslaCoilBlockEntity extends BlockEntity
         this.sideParticles++;
     }
 
+    @Environment(EnvType.CLIENT)
     private void rollNextSmallArcDirection()
     {
         final int cooldown = 5;
@@ -219,7 +312,7 @@ public class TeslaCoilBlockEntity extends BlockEntity
 
     protected void tryAttack()
     {
-        if (this.world.getTime() % 20L != 0L || this.random.nextBoolean())
+        if (this.world.getTime() % (long) (20 * (1.f + (1.f - this.getEffectiveness()))) != 0L || this.random.nextBoolean())
             return;
 
         double x = this.getPos().getX() + 0.5;
@@ -245,6 +338,11 @@ public class TeslaCoilBlockEntity extends BlockEntity
             lightningEntity.setTargetPredicate(targetPredicate);
 
             this.world.spawnEntity(lightningEntity);
+
+            if (this.getPower() > 1) {
+                this.nextOxidation -= 100;
+                this.markDirty();
+            }
         }
     }
 }

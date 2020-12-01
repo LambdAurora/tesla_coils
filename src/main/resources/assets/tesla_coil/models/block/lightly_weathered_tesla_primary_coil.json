@@ -2,6 +2,6 @@
   "credit": "Model made by LambdAurora",
   "parent": "tesla_coil:block/template_tesla_primary_coil",
   "textures": {
-    "coil": "tesla_coil:block/tesla_secondary_coil"
+    "coil": "tesla_coil:block/lightly_weathered_tesla_secondary_coil"
   }
 }

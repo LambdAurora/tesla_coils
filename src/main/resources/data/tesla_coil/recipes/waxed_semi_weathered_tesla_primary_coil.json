@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "tesla_coil:semi_weathered_tesla_primary_coil"
+  },
+  "addition": {
+    "item": "minecraft:honeycomb"
+  },
+  "result": {
+    "item": "tesla_coil:waxed_semi_weathered_tesla_primary_coil"
+  }
+}

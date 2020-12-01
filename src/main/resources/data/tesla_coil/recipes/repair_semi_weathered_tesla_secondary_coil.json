@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "tesla_coil:semi_weathered_tesla_secondary_coil"
+  },
+  "addition": {
+    "item": "minecraft:copper_ingot"
+  },
+  "result": {
+    "item": "tesla_coil:tesla_secondary_coil"
+  }
+}

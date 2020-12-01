@@ -15,15 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.lambdaurora.tesla_coil.entity.damage;
+package me.lambdaurora.tesla_coil.block;
 
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.block.Block;
 
-public class TeslaCoilDamageSource extends DamageSource
+public class WeatherableTeslaCoilPartBlock extends Block
 {
-    public TeslaCoilDamageSource()
+    private final int weathered;
+
+    public WeatherableTeslaCoilPartBlock(Settings settings, int weathered)
     {
-        super("tesla_coil");
-        this.setBypassesArmor();
+        super(settings);
+        this.weathered = weathered;
+    }
+
+    /**
+     * Gets the weathered state of this block.
+     *
+     * @return the weathered state of this block between 0 and 4
+     */
+    public int getWeathered()
+    {
+        return this.weathered;
     }
 }

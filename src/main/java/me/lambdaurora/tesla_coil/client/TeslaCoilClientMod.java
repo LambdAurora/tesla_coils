@@ -61,15 +61,11 @@ public class TeslaCoilClientMod implements ClientModInitializer
                     .overlay(RenderPhaseAccessor.getEnableOverlayColor())
                     .build(false));
 
-    public static final EntityModelLayer ENERGY_SWIRL_MODEL_LAYER = new EntityModelLayer(new Identifier(TeslaCoilMod.NAMESPACE, "energy_swirl"), "main");
-
     @Override
     public void onInitializeClient()
     {
         BlockEntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, TeslaCoilBlockEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, LightningArcEntityRenderer::new);
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), TeslaCoilRegistry.TESLA_COIL_CONTROLLER_BLOCK);
-
-        EntityModelLayersAccessor.getLayers().add(ENERGY_SWIRL_MODEL_LAYER);
     }
 }

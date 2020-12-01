@@ -17,16 +17,14 @@
 
 package me.lambdaurora.tesla_coil;
 
-import me.lambdaurora.tesla_coil.block.TeslaCoilControllerBlock;
-import me.lambdaurora.tesla_coil.block.TeslaCoilTopLoadBlock;
-import me.lambdaurora.tesla_coil.block.TeslaPrimaryCoilBlock;
-import me.lambdaurora.tesla_coil.block.TeslaSecondaryCoilBlock;
+import me.lambdaurora.tesla_coil.block.*;
 import me.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import me.lambdaurora.tesla_coil.entity.LightningArcEntity;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -51,31 +49,50 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class TeslaCoilRegistry
 {
-    public static final TeslaCoilTopLoadBlock TESLA_COIL_TOP_LOAD_BLOCK = register("tesla_coil_top_load",
+    public static final TeslaCoilTopLoadBlock TESLA_COIL_TOP_LOAD_BLOCK = registerWithItem("tesla_coil_top_load",
             new TeslaCoilTopLoadBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
                     .sounds(BlockSoundGroup.COPPER)
-                    .strength(3.f)));
-    public static final TeslaSecondaryCoilBlock TESLA_SECONDARY_COIL_BLOCK = register("tesla_coil_secondary",
-            new TeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
+                    .strength(3.f)), ItemGroup.REDSTONE);
+    public static final TeslaSecondaryCoilBlock WEATHERED_TESLA_SECONDARY_COIL_BLOCK = register("weathered_tesla_secondary_coil",
+            new TeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.WARPED_NYLIUM)
                     .sounds(BlockSoundGroup.COPPER)
-                    .strength(2.5f)));
-    public static final TeslaPrimaryCoilBlock TESLA_PRIMARY_COIL_BLOCK = register("tesla_coil_primary",
+                    .strength(2.5f), 3));
+    public static final OxidizableTeslaSecondaryCoilBlock SEMI_WEATHERED_TESLA_SECONDARY_COIL_BLOCK = register("semi_weathered_tesla_secondary_coil",
+            new OxidizableTeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.WARPED_STEM)
+                    .sounds(BlockSoundGroup.COPPER)
+                    .strength(2.5f), 2, WEATHERED_TESLA_SECONDARY_COIL_BLOCK));
+    public static final OxidizableTeslaSecondaryCoilBlock LIGHTLY_WEATHERED_TESLA_SECONDARY_COIL_BLOCK = register("lightly_weathered_tesla_secondary_coil",
+            new OxidizableTeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.LIGHT_GRAY_TERRACOTTA)
+                    .sounds(BlockSoundGroup.COPPER)
+                    .strength(2.5f), 1, SEMI_WEATHERED_TESLA_SECONDARY_COIL_BLOCK));
+    public static final OxidizableTeslaSecondaryCoilBlock TESLA_SECONDARY_COIL_BLOCK = register("tesla_secondary_coil",
+            new OxidizableTeslaSecondaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.ORANGE)
+                    .sounds(BlockSoundGroup.COPPER)
+                    .strength(2.5f), 0, LIGHTLY_WEATHERED_TESLA_SECONDARY_COIL_BLOCK));
+    public static final TeslaPrimaryCoilBlock TESLA_PRIMARY_COIL_BLOCK = registerWithItem("tesla_coil_primary",
             new TeslaPrimaryCoilBlock(FabricBlockSettings.of(Material.METAL, MapColor.GOLD)
                     .sounds(BlockSoundGroup.COPPER)
-                    .strength(2.5f)));
-    public static final TeslaCoilControllerBlock TESLA_COIL_CONTROLLER_BLOCK = register("tesla_coil_controller",
+                    .strength(2.5f)), ItemGroup.REDSTONE);
+    public static final TeslaCoilControllerBlock TESLA_COIL_CONTROLLER_BLOCK = registerWithItem("tesla_coil_controller",
             new TeslaCoilControllerBlock(FabricBlockSettings.of(Material.METAL, MapColor.RED)
                     .sounds(BlockSoundGroup.COPPER)
-                    .strength(3.f)));
+                    .strength(3.f)), ItemGroup.REDSTONE);
 
-    public static final BlockItem TESLA_COIL_TOP_LOAD_ITEM = register("tesla_coil_top_load", new BlockItem(TESLA_COIL_TOP_LOAD_BLOCK,
-            new FabricItemSettings().group(ItemGroup.REDSTONE)));
-    public static final BlockItem TESLA_SECONDARY_COIL_ITEM = register("tesla_coil_secondary",
+    public static final BlockItem TESLA_SECONDARY_COIL_ITEM = register("tesla_secondary_coil",
             new BlockItem(TESLA_SECONDARY_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.REDSTONE)));
-    public static final BlockItem TESLA_PRIMARY_COIL_ITEM = register("tesla_coil_primary",
-            new BlockItem(TESLA_PRIMARY_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.REDSTONE)));
-    public static final BlockItem TESLA_COIL_CONTROLLER_ITEM = register("tesla_coil_controller",
-            new BlockItem(TESLA_COIL_CONTROLLER_BLOCK, new FabricItemSettings().group(ItemGroup.REDSTONE)));
+    public static final BlockItem LIGHTLY_WEATHERED_TESLA_SECONDARY_COIL_ITEM = register("lightly_weathered_tesla_secondary_coil",
+            new BlockItem(LIGHTLY_WEATHERED_TESLA_SECONDARY_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.REDSTONE)));
+    public static final BlockItem SEMI_WEATHERED_TESLA_SECONDARY_COIL_ITEM = register("semi_weathered_tesla_secondary_coil",
+            new BlockItem(SEMI_WEATHERED_TESLA_SECONDARY_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.REDSTONE)));
+    public static final BlockItem WEATHERED_TESLA_SECONDARY_COIL_ITEM = register("weathered_tesla_secondary_coil",
+            new BlockItem(WEATHERED_TESLA_SECONDARY_COIL_BLOCK, new FabricItemSettings().group(ItemGroup.REDSTONE)));
+
+    public static final TeslaSecondaryCoilBlock WAXED_TESLA_SECONDARY_COIL_BLOCK = registerWithItem("waxed_tesla_secondary_coil",
+            new TeslaSecondaryCoilBlock(AbstractBlock.Settings.copy(TESLA_SECONDARY_COIL_BLOCK), 0), ItemGroup.REDSTONE);
+    public static final TeslaSecondaryCoilBlock WAXED_LIGHTLY_WEATHERED_TESLA_SECONDARY_COIL_BLOCK = registerWithItem("waxed_lightly_weathered_tesla_secondary_coil",
+            new TeslaSecondaryCoilBlock(AbstractBlock.Settings.copy(LIGHTLY_WEATHERED_TESLA_SECONDARY_COIL_BLOCK), 1), ItemGroup.REDSTONE);
+    public static final TeslaSecondaryCoilBlock WAXED_SEMI_WEATHERED_TESLA_SECONDARY_COIL_BLOCK = registerWithItem("waxed_semi_weathered_tesla_secondary_coil",
+            new TeslaSecondaryCoilBlock(AbstractBlock.Settings.copy(SEMI_WEATHERED_TESLA_SECONDARY_COIL_BLOCK), 2), ItemGroup.REDSTONE);
 
     public static final BlockEntityType<TeslaCoilBlockEntity> TESLA_COIL_BLOCK_ENTITY_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE,
             new Identifier("tesla_coil", "tesla_coil"),
@@ -94,6 +111,13 @@ public final class TeslaCoilRegistry
     protected static <T extends Block> T register(@NotNull String name, @NotNull T block)
     {
         Registry.register(Registry.BLOCK, new Identifier(TeslaCoilMod.NAMESPACE, name), block);
+        return block;
+    }
+
+    protected static <T extends Block> T registerWithItem(@NotNull String name, @NotNull T block, ItemGroup group)
+    {
+        Registry.register(Registry.BLOCK, new Identifier(TeslaCoilMod.NAMESPACE, name), block);
+        register(name, new BlockItem(block, new FabricItemSettings().group(group)));
         return block;
     }
 

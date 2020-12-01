@@ -2,9 +2,9 @@
   "credit": "Model made by LambdAurora",
   "parent": "block/block",
   "textures": {
-    "coil": "tesla_coil:block/tesla_coil_secondary",
+    "coil": "tesla_coil:block/tesla_secondary_coil",
     "primary": "minecraft:block/iron_block",
-    "particle": "tesla_coil:block/tesla_coil_secondary"
+    "particle": "tesla_coil:block/tesla_secondary_coil"
   },
   "elements": [
     {

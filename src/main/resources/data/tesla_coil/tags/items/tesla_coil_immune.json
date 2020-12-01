@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:iron_bars",
+    "tesla_coil:tesla_coil_top_load",
+    "tesla_coil:tesla_secondary_coil",
+    "tesla_coil:lightly_weathered_tesla_secondary_coil",
+    "tesla_coil:semi_weathered_tesla_secondary_coil",
+    "tesla_coil:weathered_tesla_secondary_coil",
+    "tesla_coil:waxed_tesla_secondary_coil",
+    "tesla_coil:waxed_lightly_weathered_tesla_secondary_coil",
+    "tesla_coil:waxed_semi_weathered_tesla_secondary_coil",
+    "tesla_coil:tesla_coil_primary",
+    "tesla_coil:tesla_coil_controller"
+  ]
+}

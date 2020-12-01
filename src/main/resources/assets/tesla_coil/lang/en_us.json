@@ -1,6 +1,20 @@
 {
   "block.tesla_coil.tesla_coil_top_load": "Tesla Coil Top Load",
-  "block.tesla_coil.tesla_coil_secondary": "Tesla Coil Secondary Coil",
-  "block.tesla_coil.tesla_coil_primary": "Tesla Coil Primary Coil",
-  "block.tesla_coil.tesla_coil_controller": "Tesla Coil Controller"
+
+  "block.tesla_coil.tesla_secondary_coil": "Tesla Secondary Coil",
+  "block.tesla_coil.lightly_weathered_tesla_secondary_coil": "Lightly Weathered Tesla Secondary Coil",
+  "block.tesla_coil.semi_weathered_tesla_secondary_coil": "Semi Weathered Tesla Secondary Coil",
+  "block.tesla_coil.weathered_tesla_secondary_coil": "Weathered Tesla Secondary Coil",
+
+  "block.tesla_coil.waxed_tesla_secondary_coil": "Waxed Tesla Secondary Coil",
+  "block.tesla_coil.waxed_lightly_weathered_tesla_secondary_coil": "Waxed Lightly Weathered Tesla Secondary Coil",
+  "block.tesla_coil.waxed_semi_weathered_tesla_secondary_coil": "Waxed Semi Weathered Tesla Secondary Coil",
+  "block.tesla_coil.waxed_weathered_tesla_secondary_coil": "Waxed Weathered Tesla Secondary Coil",
+
+  "block.tesla_coil.tesla_coil_primary": "Tesla Primary Coil",
+  "block.tesla_coil.tesla_coil_controller": "Tesla Coil Controller",
+
+
+  "death.attack.tesla_coil": "%1$s was electrocuted by a tesla coil",
+  "death.attack.tesla_coil.player": "%1$s was electrocuted by a tesla coil whilst fighting %2$s"
 }

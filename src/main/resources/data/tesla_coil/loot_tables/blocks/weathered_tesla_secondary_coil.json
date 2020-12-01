@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tesla_coil:tesla_coil_secondary"
+          "name": "tesla_coil:weathered_tesla_secondary_coil"
         }
       ],
       "conditions": [

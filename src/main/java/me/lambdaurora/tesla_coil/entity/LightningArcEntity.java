@@ -30,10 +30,9 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -46,7 +45,10 @@ import java.util.List;
  */
 public class LightningArcEntity extends LightningEntity
 {
-    private static final TrackedData<BlockPos> TARGET = DataTracker.registerData(LightningArcEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    private static final TrackedData<Float> TARGET_X = DataTracker.registerData(LightningArcEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> TARGET_Y = DataTracker.registerData(LightningArcEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Float> TARGET_Z = DataTracker.registerData(LightningArcEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    private static final TrackedData<Integer> TARGET_ENTITY = DataTracker.registerData(LightningArcEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private TargetPredicate targetPredicate;
 
     public LightningArcEntity(EntityType<? extends LightningArcEntity> type, World world)
@@ -58,7 +60,10 @@ public class LightningArcEntity extends LightningEntity
     protected void initDataTracker()
     {
         super.initDataTracker();
-        this.dataTracker.startTracking(TARGET, null);
+        this.dataTracker.startTracking(TARGET_X, 0.f);
+        this.dataTracker.startTracking(TARGET_Y, 0.f);
+        this.dataTracker.startTracking(TARGET_Z, 0.f);
+        this.dataTracker.startTracking(TARGET_ENTITY, this.getEntityId());
     }
 
     public TargetPredicate getTargetPredicate()
@@ -71,14 +76,34 @@ public class LightningArcEntity extends LightningEntity
         this.targetPredicate = targetPredicate;
     }
 
-    public @Nullable BlockPos getTarget()
+    /**
+     * Returns the relative target position.
+     *
+     * @return the relative target position
+     */
+    public Vec3d getTarget()
     {
-        return this.dataTracker.get(TARGET);
+        int targetEntityId = this.dataTracker.get(TARGET_ENTITY);
+        if (targetEntityId != this.getEntityId()) {
+            Entity targetEntity = this.getEntityWorld().getEntityById(targetEntityId);
+            if (targetEntity != null)
+                return targetEntity.getPos().subtract(this.getPos());
+        }
+        return new Vec3d(this.dataTracker.get(TARGET_X), this.dataTracker.get(TARGET_Y), this.dataTracker.get(TARGET_Z));
     }
 
-    public void setTarget(BlockPos target)
+    public void setTarget(Entity entity)
     {
-        this.dataTracker.set(TARGET, target);
+        this.dataTracker.set(TARGET_ENTITY, entity.getEntityId());
+        this.setTarget(entity.getPos());
+    }
+
+    public void setTarget(Vec3d target)
+    {
+        target = target.subtract(this.getPos());
+        this.dataTracker.set(TARGET_X, (float) target.getX());
+        this.dataTracker.set(TARGET_Y, (float) target.getY());
+        this.dataTracker.set(TARGET_Z, (float) target.getZ());
     }
 
     @Override
@@ -86,11 +111,12 @@ public class LightningArcEntity extends LightningEntity
     {
         this.baseTick();
 
-        BlockPos target = this.getTarget();
+        Vec3d target = this.getTarget();
         if (target == null) {
             this.discard();
             return;
         }
+        target = target.add(this.getPos());
 
         int ambientTick = ((LightningEntityAccessor) this).getAmbientTick();
         if (ambientTick == 2) {

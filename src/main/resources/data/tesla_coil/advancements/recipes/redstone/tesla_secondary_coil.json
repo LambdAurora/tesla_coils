@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tesla_coil:secondary_coil"
+    ]
+  },
+  "criteria": {
+    "has_copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:copper_ingot"
+          }
+        ]
+      }
+    },
+    "has_terracotta": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:terracotta"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tesla_coil:tesla_secondary_coil"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_copper",
+      "has_terracotta",
+      "has_the_recipe"
+    ]
+  ]
+}

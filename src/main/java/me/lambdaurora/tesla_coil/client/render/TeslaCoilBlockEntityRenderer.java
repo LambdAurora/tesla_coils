@@ -23,15 +23,16 @@ import me.lambdaurora.tesla_coil.client.render.model.TeslaCoilEnergySwirlModel;
 import me.lambdaurora.tesla_coil.mixin.client.RenderPhaseAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.client.util.math.Vector4f;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec3f;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -45,11 +46,13 @@ import org.jetbrains.annotations.NotNull;
 public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCoilBlockEntity>
 {
     private static final Identifier ENERGY_SWIRL_TEXTURE = new Identifier("textures/entity/creeper/creeper_armor.png");
-    private final TeslaCoilEnergySwirlModel model;
+    private final ModelPart[] models = new ModelPart[3];
 
     public TeslaCoilBlockEntityRenderer(BlockEntityRendererFactory.Context context)
     {
-        this.model = new TeslaCoilEnergySwirlModel(context.getLayerModelPart(TeslaCoilClientMod.ENERGY_SWIRL_MODEL_LAYER));
+        this.models[0] = TeslaCoilEnergySwirlModel.buildModel(1).createModel();
+        this.models[1] = TeslaCoilEnergySwirlModel.buildModel(2).createModel();
+        this.models[2] = TeslaCoilEnergySwirlModel.buildModel(3).createModel();
     }
 
     @Override
@@ -60,12 +63,12 @@ public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCo
         {
             float partialAge = entity.getAge() + tickDelta;
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(getEnergySwirl(ENERGY_SWIRL_TEXTURE, this.getEnergySwirlX(partialAge), partialAge * 0.01f));
-            this.model.render(matrices, vertexConsumer, 15728880, OverlayTexture.DEFAULT_UV, 0.5f, 0.5f, 0.5f, 1.f);
+            this.models[entity.getPower() - 1].render(matrices, vertexConsumer, 15728880, OverlayTexture.DEFAULT_UV, 0.5f, 0.5f, 0.5f, 1.f);
         }
 
         if (entity.getSmallArcDirection() != null) {
             matrices.push();
-            matrices.translate(0, 3, 0);
+            matrices.translate(0, 1 + entity.getPower(), 0);
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(TeslaCoilClientMod.SMALL_ELECTRIC_ARC_RENDER_LAYER);
             Matrix4f matrix = matrices.peek().getModel();
             this.renderSmallArc(vertexConsumer, matrix, entity.getSmallArcDirection());
@@ -75,8 +78,8 @@ public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCo
 
     protected void renderSmallArc(VertexConsumer vertexConsumer, Matrix4f matrix, Direction direction)
     {
-        Vector3f unit = direction.getUnitVector();
-        Vector3f normal = direction.rotateYCounterclockwise().getUnitVector();
+        Vec3f unit = direction.getUnitVector();
+        Vec3f normal = direction.rotateYCounterclockwise().getUnitVector();
 
         float x1 = 0.5f;
         float z1 = 0.5f;

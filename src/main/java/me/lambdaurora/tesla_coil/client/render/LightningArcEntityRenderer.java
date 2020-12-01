@@ -26,12 +26,9 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.*;
 
 import java.util.Random;
 
@@ -92,14 +89,14 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
     @Override
     public void render(LightningArcEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light)
     {
-        BlockPos target = entity.getTarget();
+        Vec3d target = entity.getTarget();
         if (target == null) return;
 
         Random random = new Random(entity.getEntityId() + entity.age / 2);
 
-        float targetX = (float) (target.getX() + .5 - entity.getX());
-        float targetY = (float) (target.getY() + .5 - entity.getY());
-        float targetZ = (float) (target.getZ() + .5 - entity.getZ());
+        float targetX = (float) target.getX();
+        float targetY = (float) target.getY();
+        float targetZ = (float) target.getZ();
 
         matrices.push();
 
@@ -110,10 +107,10 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
         float deltaY = Math.abs(targetY);
 
         double angle = Math.atan2(targetX, targetZ) - (Math.PI / 2.0);
-        matrices.multiply(Vector3f.POSITIVE_Y.getRadialQuaternion((float) angle));
+        matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion((float) angle));
 
         if (targetY < 0)
-            matrices.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(180.f));
+            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180.f));
 
         int steps = 1;
         if (distance > 1.f) steps = (int) Math.floor(Math.max(distance - 1, 2));

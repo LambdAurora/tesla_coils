@@ -42,7 +42,7 @@ public class TeslaCoilEnergySwirlModel extends Model
         this.body = body;
     }
 
-    public static TexturedModelData buildModel()
+    public static TexturedModelData buildModel(int power)
     {
         ModelData data = new ModelData();
         ModelPartData root = data.getRoot();
@@ -50,7 +50,7 @@ public class TeslaCoilEnergySwirlModel extends Model
                 "body",
                 ModelPartBuilder.create()
                         .uv(16, 16)
-                        .cuboid(4.f, 10.f, 4.f, 8.f, 39.f, 8.f),
+                        .cuboid(4.f, 10.f, 4.f, 8.f, 23.f + ((power - 1) * 16), 8.f),
                 ModelTransform.pivot(0.f, 6.f, 0.f)
         );
         return TexturedModelData.of(data, 64, 32);

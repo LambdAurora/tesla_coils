@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tesla_coil:block/tesla_coil_primary"
+      "model": "tesla_coil:block/tesla_primary_coil"
     }
   }
 }

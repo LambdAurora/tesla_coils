@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tesla_coil:primary_coil"
+    ]
+  },
+  "criteria": {
+    "has_secondary": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tesla_coil:secondary_coil"
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tesla_coil:primary_coil"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_secondary",
+      "has_the_recipe"
+    ]
+  ]
+}

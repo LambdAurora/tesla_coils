@@ -17,13 +17,13 @@
 
 package me.lambdaurora.tesla_coil.block;
 
+import me.lambdaurora.tesla_coil.TeslaCoilMod;
 import me.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -33,10 +33,22 @@ import net.minecraft.world.World;
 public class TeslaSecondaryCoilBlock extends Block
 {
     public static final VoxelShape BASE_SHAPE = Block.createCuboidShape(5, 0, 5, 11, 16, 11);
+    private final int weathered;
 
-    public TeslaSecondaryCoilBlock(Settings settings)
+    public TeslaSecondaryCoilBlock(Settings settings, int weathered)
     {
         super(settings);
+        this.weathered = weathered;
+    }
+
+    /**
+     * Gets the weathered state of this block.
+     *
+     * @return the weathered state of this block between 0 and 4
+     */
+    public int getWeathered()
+    {
+        return this.weathered;
     }
 
     @Override
@@ -65,8 +77,6 @@ public class TeslaSecondaryCoilBlock extends Block
         if (!(blockEntity instanceof TeslaCoilBlockEntity))
             return;
 
-        if (((TeslaCoilBlockEntity) blockEntity).isEnabled()) {
-            entity.damage(DamageSource.LIGHTNING_BOLT, 1.0F);
-        }
+        TeslaCoilMod.onTeslaCoilEntityCollision((TeslaCoilBlockEntity) blockEntity, entity);
     }
 }

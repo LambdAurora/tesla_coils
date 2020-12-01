@@ -17,12 +17,14 @@
 
 package me.lambdaurora.tesla_coil.block;
 
+import me.lambdaurora.tesla_coil.TeslaCoilMod;
 import me.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -74,8 +76,6 @@ public class TeslaCoilTopLoadBlock extends Block
         if (!(blockEntity instanceof TeslaCoilBlockEntity))
             return;
 
-        if (((TeslaCoilBlockEntity) blockEntity).isEnabled()) {
-            entity.damage(DamageSource.LIGHTNING_BOLT, 1.0F);
-        }
+        TeslaCoilMod.onTeslaCoilEntityCollision((TeslaCoilBlockEntity) blockEntity, entity);
     }
 }

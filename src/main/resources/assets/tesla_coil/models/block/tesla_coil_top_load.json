@@ -3,7 +3,7 @@
   "parent": "block/block",
   "textures": {
     "1": "tesla_coil:block/tesla_coil_top_load",
-    "coil": "tesla_coil:block/tesla_coil_secondary",
+    "coil": "tesla_coil:block/tesla_secondary_coil",
     "3": "tesla_coil:block/tesla_coil_top_load_top",
     "particle": "tesla_coil:block/tesla_coil_top_load_top"
   },

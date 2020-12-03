@@ -3,7 +3,6 @@
   "package": "me.lambdaurora.tesla_coil.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.EntityModelLayersAccessor",
     "client.RenderPhaseAccessor"
   ],
   "mixins": [

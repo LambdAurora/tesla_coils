@@ -21,7 +21,6 @@ import me.lambdaurora.tesla_coil.TeslaCoilMod;
 import me.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import me.lambdaurora.tesla_coil.client.render.LightningArcEntityRenderer;
 import me.lambdaurora.tesla_coil.client.render.TeslaCoilBlockEntityRenderer;
-import me.lambdaurora.tesla_coil.mixin.client.EntityModelLayersAccessor;
 import me.lambdaurora.tesla_coil.mixin.client.RenderPhaseAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -33,7 +32,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 
 /**

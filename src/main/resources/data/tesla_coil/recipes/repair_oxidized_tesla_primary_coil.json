@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "tesla_coil:oxidized_tesla_primary_coil"
+  },
+  "addition": {
+    "item": "minecraft:copper_ingot"
+  },
+  "result": {
+    "item": "tesla_coil:tesla_primary_coil"
+  }
+}

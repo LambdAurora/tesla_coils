@@ -1,11 +1,13 @@
 {
   "required": true,
-  "package": "me.lambdaurora.tesla_coil.mixin",
+  "package": "dev.lambdaurora.tesla_coil.mixin",
   "compatibilityLevel": "JAVA_8",
+  "plugin": "dev.lambdaurora.tesla_coil.help_me.TransformerMixinPlugin",
   "client": [
     "client.RenderPhaseAccessor"
   ],
   "mixins": [
+    "IdentifierMixin",
     "LightningEntityAccessor"
   ],
   "injectors": {

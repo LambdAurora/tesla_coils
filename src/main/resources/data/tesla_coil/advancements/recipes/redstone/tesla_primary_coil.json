@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "tesla_coil:primary_coil"
+      "tesla_coil:tesla_primary_coil"
     ]
   },
   "criteria": {
@@ -10,6 +10,19 @@
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "tesla_coil:tesla_secondary_coil"
+      }
+    },
+    "has_self": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tesla_coil:tesla_primary_coil"
+          },
+          {
+            "item": "tesla_coil:waxed_tesla_primary_coil"
+          }
+        ]
       }
     },
     "has_the_recipe": {
@@ -22,6 +35,7 @@
   "requirements": [
     [
       "has_secondary",
+      "has_self",
       "has_the_recipe"
     ]
   ]

@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "tesla_coil:repair_exposed_tesla_primary_coil"
+    ]
+  },
+  "criteria": {
+    "has_primary_coil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tesla_coil:tesla_primary_coil"
+          }
+        ]
+      }
+    },
+    "has_weathered_primary_coil": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "tesla_coil:exposed_tesla_primary_coil"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "tesla_coil:repair_exposed_tesla_primary_coil"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_primary_coil",
+      "has_weathered_primary_coil",
+      "has_the_recipe"
+    ]
+  ]
+}

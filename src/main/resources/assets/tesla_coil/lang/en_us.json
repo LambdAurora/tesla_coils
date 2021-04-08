@@ -2,22 +2,24 @@
   "block.tesla_coil.tesla_coil_top_load": "Tesla Coil Top Load",
 
   "block.tesla_coil.tesla_secondary_coil": "Tesla Secondary Coil",
-  "block.tesla_coil.lightly_weathered_tesla_secondary_coil": "Lightly Weathered Tesla Secondary Coil",
-  "block.tesla_coil.semi_weathered_tesla_secondary_coil": "Semi Weathered Tesla Secondary Coil",
+  "block.tesla_coil.exposed_tesla_secondary_coil": "Exposed Tesla Secondary Coil",
   "block.tesla_coil.weathered_tesla_secondary_coil": "Weathered Tesla Secondary Coil",
+  "block.tesla_coil.oxidized_tesla_secondary_coil": "Oxidized Tesla Secondary Coil",
 
   "block.tesla_coil.waxed_tesla_secondary_coil": "Waxed Tesla Secondary Coil",
-  "block.tesla_coil.waxed_lightly_weathered_tesla_secondary_coil": "Waxed Lightly Weathered Tesla Secondary Coil",
-  "block.tesla_coil.waxed_semi_weathered_tesla_secondary_coil": "Waxed Semi Weathered Tesla Secondary Coil",
+  "block.tesla_coil.waxed_exposed_tesla_secondary_coil": "Waxed Exposed Tesla Secondary Coil",
+  "block.tesla_coil.waxed_weathered_tesla_secondary_coil": "Waxed Weathered Tesla Secondary Coil",
+  "block.tesla_coil.waxed_oxidized_tesla_secondary_coil": "Waxed Oxidized Tesla Secondary Coil",
 
   "block.tesla_coil.tesla_primary_coil": "Tesla Primary Coil",
-  "block.tesla_coil.lightly_weathered_tesla_primary_coil": "Lightly Weathered Tesla Primary Coil",
-  "block.tesla_coil.semi_weathered_tesla_primary_coil": "Semi Weathered Tesla Primary Coil",
+  "block.tesla_coil.exposed_tesla_primary_coil": "Exposed Tesla Primary Coil",
   "block.tesla_coil.weathered_tesla_primary_coil": "Weathered Tesla Primary Coil",
+  "block.tesla_coil.oxidized_tesla_primary_coil": "Oxidized Tesla Primary Coil",
 
   "block.tesla_coil.waxed_tesla_primary_coil": "Waxed Tesla Primary Coil",
-  "block.tesla_coil.waxed_lightly_weathered_tesla_primary_coil": "Waxed Lightly Weathered Tesla Primary Coil",
-  "block.tesla_coil.waxed_semi_weathered_tesla_primary_coil": "Waxed Semi Weathered Tesla Primary Coil",
+  "block.tesla_coil.waxed_exposed_tesla_primary_coil": "Waxed Exposed Tesla Primary Coil",
+  "block.tesla_coil.waxed_weathered_tesla_primary_coil": "Waxed Weathered Tesla Primary Coil",
+  "block.tesla_coil.waxed_oxidized_tesla_primary_coil": "Waxed Oxidized Tesla Primary Coil",
 
   "block.tesla_coil.tesla_coil_controller": "Tesla Coil Controller",
 

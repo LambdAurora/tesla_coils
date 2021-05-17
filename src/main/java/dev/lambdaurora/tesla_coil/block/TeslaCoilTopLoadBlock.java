@@ -68,7 +68,7 @@ public class TeslaCoilTopLoadBlock extends Block {
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         int offset = 2;
-        BlockEntity blockEntity = world.getBlockEntity(pos.down(offset));
+        var blockEntity = world.getBlockEntity(pos.down(offset));
         while (!(blockEntity instanceof TeslaCoilBlockEntity) && offset <= 4) {
             offset++;
             blockEntity = world.getBlockEntity(pos.down(offset));

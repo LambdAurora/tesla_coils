@@ -40,18 +40,18 @@ final class OxidizableClassVisitor extends ClassVisitor {
     }
 
     static TransformerMixinPlugin.ClassTransformer createTransformer() {
-        FabricLoader loader = FabricLoader.getInstance();
-        MappingResolver mappings = loader.getMappingResolver();
+        var loader = FabricLoader.getInstance();
+        var mappings = loader.getMappingResolver();
 
         String oxidizable = mappings.mapClassName("intermediary", OXIDIZABLE);
         String createOxidizeMap = mappings.mapMethodName("intermediary", OXIDIZABLE, CREATE_OXIDIZE_MAP, CREATE_OXIDIZE_MAP_DESC);
 
         return (name, transformedName, bytes) -> {
             if (name.equals(oxidizable)) {
-                ClassReader reader = new ClassReader(bytes);
-                ClassWriter writer = new ClassWriter(0);
+                var reader = new ClassReader(bytes);
+                var writer = new ClassWriter(0);
 
-                ClassVisitor visitor = new OxidizableClassVisitor(writer, createOxidizeMap);
+                var visitor = new OxidizableClassVisitor(writer, createOxidizeMap);
                 reader.accept(visitor, 0);
 
                 return writer.toByteArray();

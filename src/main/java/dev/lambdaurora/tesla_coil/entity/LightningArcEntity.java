@@ -79,7 +79,7 @@ public class LightningArcEntity extends LightningEntity {
     public Vec3d getTarget() {
         int targetEntityId = this.dataTracker.get(TARGET_ENTITY);
         if (targetEntityId != this.getId()) {
-            Entity targetEntity = this.getEntityWorld().getEntityById(targetEntityId);
+            var targetEntity = this.getEntityWorld().getEntityById(targetEntityId);
             if (targetEntity != null)
                 return targetEntity.getPos().subtract(this.getPos());
         }
@@ -131,15 +131,15 @@ public class LightningArcEntity extends LightningEntity {
 
         if (ambientTick >= 0 && !this.world.isClient()) {
             double d = 3.0D;
-            List<Entity> list = this.world.getOtherEntities(this,
+            var list = this.world.getOtherEntities(this,
                     new Box(target.getX() - d, target.getY() - d, target.getZ() - d,
                             target.getX() + d, target.getY() + 6.0D + d, target.getZ() + d),
                     Entity::isAlive);
 
-            for (Entity entity : list) {
+            for (var entity : list) {
                 if (entity instanceof LivingEntity && this.targetPredicate.test(null, (LivingEntity) entity)) {
-                    if (entity instanceof IronGolemEntity) {
-                        ((IronGolemEntity) entity).heal(1.f);
+                    if (entity instanceof IronGolemEntity ironGolem) {
+                        ironGolem.heal(1.f);
                     } else {
                         entity.onStruckByLightning((ServerWorld) this.world, this);
                     }

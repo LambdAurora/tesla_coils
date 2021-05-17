@@ -57,8 +57,8 @@ public class TeslaSecondaryCoilBlock extends WeatherableTeslaCoilPartBlock {
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        BlockPos controllerPos = pos.offset(Direction.DOWN, 2);
-        BlockEntity blockEntity = world.getBlockEntity(controllerPos);
+        var controllerPos = pos.offset(Direction.DOWN, 2);
+        var blockEntity = world.getBlockEntity(controllerPos);
         if (!(blockEntity instanceof TeslaCoilBlockEntity))
             return;
 

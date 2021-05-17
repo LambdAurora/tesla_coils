@@ -17,7 +17,6 @@
 
 package dev.lambdaurora.tesla_coil;
 
-import com.mojang.datafixers.DataFixerBuilder;
 import dev.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import dev.lambdaurora.tesla_coil.entity.damage.TeslaCoilDamageSource;
 import net.fabricmc.api.ModInitializer;
@@ -28,7 +27,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterials;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
@@ -38,8 +36,6 @@ public class TeslaCoilMod implements ModInitializer {
     public static final Tag<Item> TESLA_COIL_IMMUNE_ITEMS = TagRegistry.item(new Identifier(NAMESPACE, "tesla_coil_immune"));
     public static final DamageSource TESLA_COIL_DAMAGE = new TeslaCoilDamageSource();
 
-    private static final DataFixerBuilder DFU = new DataFixerBuilder(0);
-
     @Override
     public void onInitialize() {
         TeslaCoilRegistry.init();
@@ -47,16 +43,14 @@ public class TeslaCoilMod implements ModInitializer {
 
     public static void onTeslaCoilEntityCollision(TeslaCoilBlockEntity blockEntity, Entity entity) {
         if (blockEntity.isEnabled()) {
-            if (entity instanceof ItemEntity && ((ItemEntity) entity).getStack().isIn(TeslaCoilMod.TESLA_COIL_IMMUNE_ITEMS))
+            if (entity instanceof ItemEntity itemEntity && itemEntity.getStack().isIn(TeslaCoilMod.TESLA_COIL_IMMUNE_ITEMS))
                 return;
             float totalDamage = TeslaCoilMod.TESLA_COIL_COMPONENTS_ACTIVE_DAMAGE * blockEntity.getDamageMultiplier();
             float damage = totalDamage;
-            for (ItemStack stack : entity.getArmorItems())
-                if (!stack.isEmpty() && stack.getItem() instanceof ArmorItem) {
-                    ArmorItem armor = (ArmorItem) stack.getItem();
-                    if (armor.getMaterial() == ArmorMaterials.LEATHER) {
-                        damage = Math.max(0.f, damage - (totalDamage / 4.f));
-                    }
+            for (var stack : entity.getArmorItems())
+                if (!stack.isEmpty() && stack.getItem() instanceof ArmorItem armor
+                        && armor.getMaterial() == ArmorMaterials.LEATHER) {
+                    damage = Math.max(0.f, damage - (totalDamage / 4.f));
                 }
             entity.damage(TeslaCoilMod.TESLA_COIL_DAMAGE, damage);
         }

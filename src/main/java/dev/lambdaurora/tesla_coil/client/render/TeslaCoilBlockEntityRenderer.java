@@ -62,23 +62,23 @@ public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCo
 
         {
             float partialAge = entity.getAge() + tickDelta;
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(getEnergySwirl(ENERGY_SWIRL_TEXTURE, this.getEnergySwirlX(partialAge), partialAge * 0.01f));
+            var vertexConsumer = vertexConsumers.getBuffer(getEnergySwirl(ENERGY_SWIRL_TEXTURE, this.getEnergySwirlX(partialAge), partialAge * 0.01f));
             this.models[entity.getPower() - 1].render(matrices, vertexConsumer, 15728880, OverlayTexture.DEFAULT_UV, 0.5f, 0.5f, 0.5f, 1.f);
         }
 
         if (entity.getSmallArcDirection() != null) {
             matrices.push();
             matrices.translate(0, 1 + entity.getPower(), 0);
-            VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(SMALL_RANDOM_ELECTRIC_ARC_TEXTURE));
-            Matrix4f matrix = matrices.peek().getModel();
+            var vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucent(SMALL_RANDOM_ELECTRIC_ARC_TEXTURE));
+            var matrix = matrices.peek().getModel();
             this.renderSmallArc(vertexConsumer, matrix, entity.getSmallArcDirection());
             matrices.pop();
         }
     }
 
     protected void renderSmallArc(VertexConsumer vertexConsumer, Matrix4f matrix, Direction direction) {
-        Vec3f unit = direction.getUnitVector();
-        Vec3f normal = direction.rotateYCounterclockwise().getUnitVector();
+        var unit = direction.getUnitVector();
+        var normal = direction.rotateYCounterclockwise().getUnitVector();
 
         float x1 = 0.5f;
         float z1 = 0.5f;
@@ -95,7 +95,7 @@ public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCo
 
         for (int i = 0; i < 4; i++) {
             int start = i * 5;
-            Vector4f vec = new Vector4f(vertices[start], vertices[start + 1], vertices[start + 2], 1.f);
+            var vec = new Vector4f(vertices[start], vertices[start + 1], vertices[start + 2], 1.f);
             vec.transform(matrix);
             vertexConsumer.vertex(vec.getX(), vec.getY(), vec.getZ(),
                     1.f, 1.f, 1.f, 0.75f,

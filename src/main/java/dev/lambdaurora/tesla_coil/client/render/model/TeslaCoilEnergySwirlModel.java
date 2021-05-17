@@ -41,8 +41,8 @@ public class TeslaCoilEnergySwirlModel extends Model {
     }
 
     public static TexturedModelData buildModel(int power) {
-        ModelData data = new ModelData();
-        ModelPartData root = data.getRoot();
+        var data = new ModelData();
+        var root = data.getRoot();
         root.addChild(
                 "body",
                 ModelPartBuilder.create()

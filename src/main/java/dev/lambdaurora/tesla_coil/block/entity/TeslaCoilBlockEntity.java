@@ -24,7 +24,6 @@ import dev.lambdaurora.tesla_coil.block.WeatherableTeslaCoilPartBlock;
 import dev.lambdaurora.tesla_coil.entity.LightningArcEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Oxidizable;
@@ -158,7 +157,7 @@ public class TeslaCoilBlockEntity extends BlockEntity {
         }
 
         // Controller
-        BlockPos.Mutable pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+        var pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY(), this.pos.getZ());
         if (!this.checkForIronBars(pos)) {
             this.power = 0;
             return;
@@ -166,8 +165,8 @@ public class TeslaCoilBlockEntity extends BlockEntity {
 
         // Primary coil
         pos.move(Direction.UP);
-        BlockState state = world.getBlockState(pos);
-        if (!(state.getBlock() instanceof TeslaPrimaryCoilBlock) || !this.checkForIronBars(pos) || ((TeslaPrimaryCoilBlock) state.getBlock()).getWeathered() >= 3) {
+        var state = world.getBlockState(pos);
+        if (!(state.getBlock() instanceof TeslaPrimaryCoilBlock primaryCoilBlock) || !this.checkForIronBars(pos) || primaryCoilBlock.getWeathered() >= 3) {
             this.power = 0;
             return;
         }
@@ -194,9 +193,8 @@ public class TeslaCoilBlockEntity extends BlockEntity {
         for (int i = 0; i < this.power; i++) {
             state = world.getBlockState(pos);
 
-            Block block = state.getBlock();
-            if (block instanceof WeatherableTeslaCoilPartBlock) {
-                WeatherableTeslaCoilPartBlock part = (WeatherableTeslaCoilPartBlock) block;
+            var block = state.getBlock();
+            if (block instanceof WeatherableTeslaCoilPartBlock part) {
 
                 effectiveness += ((3.f - part.getWeathered()) / 3.f) / this.getPower();
             }
@@ -219,18 +217,17 @@ public class TeslaCoilBlockEntity extends BlockEntity {
 
     private void oxidize(World world) {
         int yOffset = Math.max(1, this.random.nextInt(this.power + 1));
-        System.out.println(yOffset);
-        BlockPos pos = this.pos.up(yOffset);
-        BlockState state = world.getBlockState(pos);
-        Block block = state.getBlock();
-        if (block instanceof WeatherableTeslaCoilPartBlock && block instanceof Oxidizable) {
-            ((Oxidizable) state.getBlock()).getDegradationResult(state).ifPresent(res -> world.setBlockState(pos, res));
+        var pos = this.pos.up(yOffset);
+        var state = world.getBlockState(pos);
+        var block = state.getBlock();
+        if (block instanceof WeatherableTeslaCoilPartBlock && block instanceof Oxidizable oxidizable) {
+            oxidizable.getDegradationResult(state).ifPresent(res -> world.setBlockState(pos, res));
         }
     }
 
     private boolean checkForIronBars(BlockPos.Mutable pos) {
         BlockState state;
-        for (Direction direction : Direction.values()) {
+        for (var direction : Direction.values()) {
             if (!direction.getAxis().isHorizontal())
                 continue;
 
@@ -258,7 +255,7 @@ public class TeslaCoilBlockEntity extends BlockEntity {
             float yOffset = this.sideParticles / 2.f / (float) (5 - this.power);
             float yPos = this.pos.getY() + yOffset;
 
-            for (Direction direction : Direction.values()) {
+            for (var direction : Direction.values()) {
                 if (direction.getAxis().isHorizontal()) {
                     this.world.addParticle(ParticleTypes.CRIT,
                             xPos + direction.getOffsetX(), yPos, zPos + direction.getOffsetZ(),
@@ -298,17 +295,17 @@ public class TeslaCoilBlockEntity extends BlockEntity {
         double y = this.getPos().getY();
         double z = this.getPos().getZ() + 0.5;
 
-        TargetPredicate targetPredicate = new TargetPredicate();
+        var targetPredicate = TargetPredicate.method_36626();
         targetPredicate.setPredicate(entity -> entity instanceof Monster
                 || (entity instanceof IronGolemEntity && entity.getHealth() < entity.getMaxHealth() - 1.f));
         int offset = (4 + this.power * 4);
-        LivingEntity entity = this.world.getClosestEntity(LivingEntity.class, targetPredicate, null,
+        var entity = this.world.getClosestEntity(LivingEntity.class, targetPredicate, null,
                 x, y, z,
                 new Box(this.pos.getX() - offset, this.pos.getY() - 4, this.pos.getZ() - offset,
                         this.pos.getX() + offset, this.pos.getY() + offset - 2, this.pos.getZ() + offset));
 
         if (entity != null) {
-            LightningArcEntity lightningEntity = TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE.create(this.world);
+            var lightningEntity = TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE.create(this.world);
 
             if (lightningEntity == null) return;
 

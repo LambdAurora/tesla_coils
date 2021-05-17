@@ -52,7 +52,7 @@ public class IdentifierMixin {
     @Inject(method = "<init>([Ljava/lang/String;)V", at = @At("RETURN"))
     private void onInit(String[] id, CallbackInfo ci) {
         if (id[0].equals(TeslaCoilMod.NAMESPACE)) {
-            String replacement = teslacoil$ID_DATAFIX.get(id[1]);
+            var replacement = teslacoil$ID_DATAFIX.get(id[1]);
             if (replacement != null)
                 this.path = replacement;
         }

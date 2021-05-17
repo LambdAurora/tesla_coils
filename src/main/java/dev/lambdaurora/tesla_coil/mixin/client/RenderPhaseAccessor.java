@@ -28,23 +28,8 @@ public interface RenderPhaseAccessor {
         throw new IllegalStateException("Injection failed.");
     }
 
-    @Accessor("TRANSLUCENT_TRANSPARENCY")
-    static RenderPhase.Transparency getTranslucentTransparency() {
-        throw new IllegalStateException("Injection failed.");
-    }
-
-    @Accessor("ENABLE_LIGHTMAP")
-    static RenderPhase.Lightmap getEnableLightmap() {
-        throw new IllegalStateException("Injection failed.");
-    }
-
-    @Accessor("ENABLE_OVERLAY_COLOR")
-    static RenderPhase.Overlay getEnableOverlayColor() {
-        throw new IllegalStateException("Injection failed.");
-    }
-
-    @Accessor("DISABLE_CULLING")
-    static RenderPhase.Cull getDisableCulling() {
+    @Accessor("LIGHTNING_SHADER")
+    static RenderPhase.Shader getLightningShader() {
         throw new IllegalStateException("Injection failed.");
     }
 

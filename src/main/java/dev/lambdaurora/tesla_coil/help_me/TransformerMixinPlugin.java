@@ -41,7 +41,7 @@ public final class TransformerMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        ClassTransformer transformer = OxidizableClassVisitor.createTransformer();
+        var transformer = OxidizableClassVisitor.createTransformer();
 
         try {
             this.applyClassTransformer(transformer);
@@ -78,29 +78,29 @@ public final class TransformerMixinPlugin implements IMixinConfigPlugin {
     }
 
     private void applyClassTransformer(ClassTransformer transformer) throws ReflectiveOperationException {
-        ClassLoader loader = this.getClass().getClassLoader();
+        var loader = this.getClass().getClassLoader();
 
-        Class<?> knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
-        Class<?> knotClassDelegate = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate");
-        Class<?> mixinEnvironment = MixinEnvironment.class;
+        var knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
+        var knotClassDelegate = Class.forName("net.fabricmc.loader.launch.knot.KnotClassDelegate");
+        var mixinEnvironment = MixinEnvironment.class;
 
-        Field delegateField = knotClassLoader.getDeclaredField("delegate");
+        var delegateField = knotClassLoader.getDeclaredField("delegate");
         delegateField.setAccessible(true);
 
-        Field mixinTransformerField = knotClassDelegate.getDeclaredField("mixinTransformer");
+        var mixinTransformerField = knotClassDelegate.getDeclaredField("mixinTransformer");
         mixinTransformerField.setAccessible(true);
 
-        Field activeEnvTransformerField = mixinEnvironment.getDeclaredField("transformer");
+        var activeEnvTransformerField = mixinEnvironment.getDeclaredField("transformer");
         activeEnvTransformerField.setAccessible(true);
 
-        Object delegate = delegateField.get(loader);
-        Object mixinTransformer = mixinTransformerField.get(delegate);
+        var delegate = delegateField.get(loader);
+        var mixinTransformer = mixinTransformerField.get(delegate);
 
         if (mixinTransformer == null) {
             throw new IllegalStateException("mixin transformer not yet initialized!");
         }
 
-        Object lastTransformer = activeEnvTransformerField.get(null);
+        var lastTransformer = activeEnvTransformerField.get(null);
 
         try {
             activeEnvTransformerField.set(null, null);
@@ -121,7 +121,7 @@ public final class TransformerMixinPlugin implements IMixinConfigPlugin {
 
         @Override
         public byte[] transformClassBytes(String name, String transformedName, byte[] basicClass) {
-            byte[] bytes = this.parent.transformClassBytes(name, transformedName, basicClass);
+            var bytes = this.parent.transformClassBytes(name, transformedName, basicClass);
             return this.transformer.transform(name, transformedName, bytes);
         }
     }

@@ -54,7 +54,7 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
                     .writeMaskState(RenderPhaseAccessor.getAllMask())
                     .transparency(RenderPhaseAccessor.getLightningTransparency())
                     .target(RenderPhaseAccessor.getWeatherTarget())
-                    .shader(new RenderPhase.Shader(GameRenderer::getRenderTypeLightningShader))
+                    .shader(RenderPhaseAccessor.getLightningShader())
                     .build(false)
     );
     private static final float RED = 0.f;
@@ -92,7 +92,7 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
         Vec3d target = entity.getTarget();
         if (target == null) return;
 
-        Random random = new Random(entity.getId() + entity.age / 2);
+        var random = new Random(entity.getId() + entity.age / 2);
 
         float targetX = (float) target.getX();
         float targetY = (float) target.getY();
@@ -100,8 +100,8 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
 
         matrices.push();
 
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(ELECTRIC_ARC);
-        Matrix4f matrix = matrices.peek().getModel();
+        var vertexConsumer = vertexConsumers.getBuffer(ELECTRIC_ARC);
+        var matrix = matrices.peek().getModel();
 
         float distance = MathHelper.sqrt(targetX * targetX + targetZ * targetZ);
         float deltaY = Math.abs(targetY);

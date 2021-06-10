@@ -21,7 +21,6 @@ import dev.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import dev.lambdaurora.tesla_coil.block.TeslaPrimaryCoilBlock;
 import dev.lambdaurora.tesla_coil.block.TeslaSecondaryCoilBlock;
 import dev.lambdaurora.tesla_coil.block.WeatherableTeslaCoilPartBlock;
-import dev.lambdaurora.tesla_coil.entity.LightningArcEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -295,7 +294,7 @@ public class TeslaCoilBlockEntity extends BlockEntity {
         double y = this.getPos().getY();
         double z = this.getPos().getZ() + 0.5;
 
-        var targetPredicate = TargetPredicate.method_36626();
+        var targetPredicate = TargetPredicate.createNonAttackable();
         targetPredicate.setPredicate(entity -> entity instanceof Monster
                 || (entity instanceof IronGolemEntity && entity.getHealth() < entity.getMaxHealth() - 1.f));
         int offset = (4 + this.power * 4);

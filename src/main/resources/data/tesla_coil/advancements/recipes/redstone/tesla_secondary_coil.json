@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:copper_ingot"
+            "items": [
+              "minecraft:copper_ingot"
+            ]
           }
         ]
       }
@@ -21,7 +23,9 @@
       "conditions": {
         "items": [
           {
-            "item": "minecraft:terracotta"
+            "items": [
+              "minecraft:terracotta"
+            ]
           }
         ]
       }
@@ -31,10 +35,14 @@
       "conditions": {
         "items": [
           {
-            "item": "tesla_coil:tesla_secondary_coil"
+            "items": [
+              "tesla_coil:tesla_secondary_coil"
+            ]
           },
           {
-            "item": "tesla_coil:waxed_tesla_secondary_coil"
+            "items": [
+              "tesla_coil:waxed_tesla_secondary_coil"
+            ]
           }
         ]
       }

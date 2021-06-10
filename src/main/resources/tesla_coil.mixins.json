@@ -7,7 +7,6 @@
     "client.RenderPhaseAccessor"
   ],
   "mixins": [
-    "IdentifierMixin",
     "LightningEntityAccessor"
   ],
   "injectors": {

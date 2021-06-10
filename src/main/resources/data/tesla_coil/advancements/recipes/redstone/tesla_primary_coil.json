@@ -17,10 +17,14 @@
       "conditions": {
         "items": [
           {
-            "item": "tesla_coil:tesla_primary_coil"
+            "items": [
+              "tesla_coil:tesla_primary_coil"
+            ]
           },
           {
-            "item": "tesla_coil:waxed_tesla_primary_coil"
+            "items": [
+              "tesla_coil:waxed_tesla_primary_coil"
+            ]
           }
         ]
       }

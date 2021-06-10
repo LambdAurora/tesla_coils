@@ -35,11 +35,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Oxidizable.class)
 public interface OxidizableMixin {
-    @Inject(method = "method_34740()Lcom/google/common/collect/BiMap;", at = @At("RETURN"), cancellable = true)
+    /*@Inject(method = "method_34740()Lcom/google/common/collect/BiMap;", at = @At("RETURN"), cancellable = true)
     private static void onBuildLevelIncreasesMap(CallbackInfoReturnable<BiMap<Block, Block>> cir) {
         var val = cir.getReturnValue();
         var newMap = ImmutableBiMap.<Block, Block>builder();
         newMap.putAll(val);
         cir.setReturnValue(TeslaCoilRegistry.hookOxidize(newMap).build());
-    }
+    }*/
 }

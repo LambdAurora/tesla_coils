@@ -24,7 +24,7 @@
         "items": [
           {
             "items": [
-              "tesla_coil:semi_weathered_tesla_primary_coil"
+              "tesla_coil:oxidized_tesla_primary_coil"
             ]
           }
         ]
@@ -33,7 +33,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tesla_coil:repair_semi_weathered_tesla_primary_coil"
+        "recipe": "tesla_coil:repair_oxidized_tesla_primary_coil"
       }
     }
   },

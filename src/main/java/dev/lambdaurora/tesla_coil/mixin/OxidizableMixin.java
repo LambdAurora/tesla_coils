@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableBiMap;
 import dev.lambdaurora.tesla_coil.TeslaCoilRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Oxidizable;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +36,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Oxidizable.class)
 public interface OxidizableMixin {
-    /*@Inject(method = "method_34740()Lcom/google/common/collect/BiMap;", at = @At("RETURN"), cancellable = true)
+    /*
+    @Dynamic
+    @Inject(method = "method_34740()Lcom/google/common/collect/BiMap;", at = @At("RETURN"), remap = false, cancellable = true)
     private static void onBuildLevelIncreasesMap(CallbackInfoReturnable<BiMap<Block, Block>> cir) {
         var val = cir.getReturnValue();
         var newMap = ImmutableBiMap.<Block, Block>builder();

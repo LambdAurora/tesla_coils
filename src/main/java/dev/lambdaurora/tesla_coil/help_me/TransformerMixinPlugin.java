@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import org.spongepowered.asm.mixin.transformer.FabricMixinTransformerProxy;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Set;
 

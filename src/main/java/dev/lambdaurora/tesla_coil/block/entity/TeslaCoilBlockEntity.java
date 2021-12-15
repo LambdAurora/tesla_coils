@@ -42,282 +42,282 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 public class TeslaCoilBlockEntity extends BlockEntity {
-    private final Random random = new Random();
-    private int power = 0;
-    private int age = 0;
-    private long nextOxidation;
-    private float effectiveness = 1.f;
+	private final Random random = new Random();
+	private int power = 0;
+	private int age = 0;
+	private long nextOxidation;
+	private float effectiveness = 1.f;
 
-    @Environment(EnvType.CLIENT)
-    private int sideParticles = 0;
-    @Environment(EnvType.CLIENT)
-    private Direction smallArcDirection = null;
-    @Environment(EnvType.CLIENT)
-    private int smallArcCooldown = 0;
+	@Environment(EnvType.CLIENT)
+	private int sideParticles = 0;
+	@Environment(EnvType.CLIENT)
+	private Direction smallArcDirection = null;
+	@Environment(EnvType.CLIENT)
+	private int smallArcCooldown = 0;
 
-    public TeslaCoilBlockEntity(BlockPos pos, BlockState state) {
-        super(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, pos, state);
-    }
+	public TeslaCoilBlockEntity(BlockPos pos, BlockState state) {
+		super(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, pos, state);
+	}
 
-    public boolean isEnabled() {
-        return this.power != 0;
-    }
+	public boolean isEnabled() {
+		return this.power != 0;
+	}
 
-    public int getPower() {
-        return this.power;
-    }
+	public int getPower() {
+		return this.power;
+	}
 
-    /**
-     * Returns the effectiveness of this tesla coil. Effectiveness is a number between 0 and 1 representing a percentage.
-     *
-     * @return the effectiveness
-     */
-    public float getEffectiveness() {
-        return this.effectiveness;
-    }
+	/**
+	 * Returns the effectiveness of this tesla coil. Effectiveness is a number between 0 and 1 representing a percentage.
+	 *
+	 * @return the effectiveness
+	 */
+	public float getEffectiveness() {
+		return this.effectiveness;
+	}
 
-    public float getPowerDamageMultiplier() {
-        return this.getPower() <= 2 ? 1.f : 1.25f;
-    }
+	public float getPowerDamageMultiplier() {
+		return this.getPower() <= 2 ? 1.f : 1.25f;
+	}
 
-    public float getDamageMultiplier() {
-        return this.getPowerDamageMultiplier() * this.getEffectiveness();
-    }
+	public float getDamageMultiplier() {
+		return this.getPowerDamageMultiplier() * this.getEffectiveness();
+	}
 
-    public int getAge() {
-        return this.age;
-    }
+	public int getAge() {
+		return this.age;
+	}
 
-    @Environment(EnvType.CLIENT)
-    public @Nullable Direction getSmallArcDirection() {
-        return this.smallArcDirection;
-    }
+	@Environment(EnvType.CLIENT)
+	public @Nullable Direction getSmallArcDirection() {
+		return this.smallArcDirection;
+	}
 
-    @Environment(EnvType.CLIENT)
-    public static void clientTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil) {
-        teslaCoil.checkStructure(world);
+	@Environment(EnvType.CLIENT)
+	public static void clientTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil) {
+		teslaCoil.checkStructure(world);
 
-        if (teslaCoil.isEnabled()) {
-            teslaCoil.age++;
+		if (teslaCoil.isEnabled()) {
+			teslaCoil.age++;
 
-            teslaCoil.displaySideParticles();
-            teslaCoil.rollNextSmallArcDirection();
-        }
-    }
+			teslaCoil.displaySideParticles();
+			teslaCoil.rollNextSmallArcDirection();
+		}
+	}
 
-    public static void serverTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil) {
-        int lastPower = teslaCoil.getPower();
-        teslaCoil.checkStructure(world);
-        if (lastPower != teslaCoil.getPower())
-            teslaCoil.markDirty();
+	public static void serverTick(World world, BlockPos pos, BlockState state, TeslaCoilBlockEntity teslaCoil) {
+		int lastPower = teslaCoil.getPower();
+		teslaCoil.checkStructure(world);
+		if (lastPower != teslaCoil.getPower())
+			teslaCoil.markDirty();
 
-        if (teslaCoil.isEnabled()) {
-            if (lastPower == 0) {
-                teslaCoil.pickNextOxidationTime(world);
-            }
+		if (teslaCoil.isEnabled()) {
+			if (lastPower == 0) {
+				teslaCoil.pickNextOxidationTime(world);
+			}
 
-            teslaCoil.age++;
+			teslaCoil.age++;
 
-            teslaCoil.tryAttack();
-            if (teslaCoil.getPower() > 1)
-                teslaCoil.oxidationTick(world);
-        } else {
-            teslaCoil.age = 0;
-        }
-    }
+			teslaCoil.tryAttack();
+			if (teslaCoil.getPower() > 1)
+				teslaCoil.oxidationTick(world);
+		} else {
+			teslaCoil.age = 0;
+		}
+	}
 
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        this.power = nbt.getInt("power");
-        this.nextOxidation = nbt.getLong("next_oxidation");
-    }
+	@Override
+	public void readNbt(NbtCompound nbt) {
+		super.readNbt(nbt);
+		this.power = nbt.getInt("power");
+		this.nextOxidation = nbt.getLong("next_oxidation");
+	}
 
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        nbt = super.writeNbt(nbt);
-        nbt.putInt("power", this.power);
-        nbt.putLong("next_oxidation", this.nextOxidation);
-        return nbt;
-    }
+	@Override
+	public NbtCompound writeNbt(NbtCompound nbt) {
+		nbt = super.writeNbt(nbt);
+		nbt.putInt("power", this.power);
+		nbt.putLong("next_oxidation", this.nextOxidation);
+		return nbt;
+	}
 
-    protected void pickNextOxidationTime(World world) {
-        int randomOffset = this.random.nextInt(24000 * 2);
-        if (this.random.nextBoolean())
-            randomOffset = -randomOffset;
+	protected void pickNextOxidationTime(World world) {
+		int randomOffset = this.random.nextInt(24000 * 2);
+		if (this.random.nextBoolean())
+			randomOffset = -randomOffset;
 
-        this.nextOxidation = world.getTime() + (24000 * 15) + randomOffset; // 15 Minecraft Days +/- 2 (random) Minecraft Days
-        this.markDirty();
-    }
+		this.nextOxidation = world.getTime() + (24000 * 15) + randomOffset; // 15 Minecraft Days +/- 2 (random) Minecraft Days
+		this.markDirty();
+	}
 
-    protected void checkStructure(World world) {
-        if (world.getTime() % 80L != 0L) {
-            return;
-        }
+	protected void checkStructure(World world) {
+		if (world.getTime() % 80L != 0L) {
+			return;
+		}
 
-        // Controller
-        var pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY(), this.pos.getZ());
-        if (!this.checkForIronBars(pos)) {
-            this.power = 0;
-            return;
-        }
+		// Controller
+		var pos = new BlockPos.Mutable(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+		if (!this.checkForIronBars(pos)) {
+			this.power = 0;
+			return;
+		}
 
-        // Primary coil
-        pos.move(Direction.UP);
-        var state = world.getBlockState(pos);
-        if (!(state.getBlock() instanceof TeslaPrimaryCoilBlock primaryCoilBlock) || !this.checkForIronBars(pos) || primaryCoilBlock.getWeathered() >= 3) {
-            this.power = 0;
-            return;
-        }
+		// Primary coil
+		pos.move(Direction.UP);
+		var state = world.getBlockState(pos);
+		if (!(state.getBlock() instanceof TeslaPrimaryCoilBlock primaryCoilBlock) || !this.checkForIronBars(pos) || primaryCoilBlock.getWeathered() >= 3) {
+			this.power = 0;
+			return;
+		}
 
-        pos.move(Direction.UP);
-        this.power = 1;
-        while ((state = world.getBlockState(pos)).getBlock() instanceof TeslaSecondaryCoilBlock && this.checkForIronBars(pos) && power < 3) {
-            if (((TeslaSecondaryCoilBlock) state.getBlock()).getWeathered() >= 3) {
-                this.power = 0;
-                return;
-            }
-            this.power++;
-            pos.move(Direction.UP);
-        }
+		pos.move(Direction.UP);
+		this.power = 1;
+		while ((state = world.getBlockState(pos)).getBlock() instanceof TeslaSecondaryCoilBlock && this.checkForIronBars(pos) && power < 3) {
+			if (((TeslaSecondaryCoilBlock) state.getBlock()).getWeathered() >= 3) {
+				this.power = 0;
+				return;
+			}
+			this.power++;
+			pos.move(Direction.UP);
+		}
 
-        if (state.getBlock() != TeslaCoilRegistry.TESLA_COIL_TOP_LOAD_BLOCK) {
-            this.power = 0;
-            return;
-        }
+		if (state.getBlock() != TeslaCoilRegistry.TESLA_COIL_TOP_LOAD_BLOCK) {
+			this.power = 0;
+			return;
+		}
 
-        // The tesla coil is still working. Getting its effectiveness.
-        float effectiveness = 0.f;
-        pos.set(this.pos).move(Direction.UP);
-        for (int i = 0; i < this.power; i++) {
-            state = world.getBlockState(pos);
+		// The tesla coil is still working. Getting its effectiveness.
+		float effectiveness = 0.f;
+		pos.set(this.pos).move(Direction.UP);
+		for (int i = 0; i < this.power; i++) {
+			state = world.getBlockState(pos);
 
-            var block = state.getBlock();
-            if (block instanceof WeatherableTeslaCoilPartBlock part) {
+			var block = state.getBlock();
+			if (block instanceof WeatherableTeslaCoilPartBlock part) {
 
-                effectiveness += ((3.f - part.getWeathered()) / 3.f) / this.getPower();
-            }
+				effectiveness += ((3.f - part.getWeathered()) / 3.f) / this.getPower();
+			}
 
-            pos.move(Direction.UP);
-        }
-        this.effectiveness = effectiveness;
-    }
+			pos.move(Direction.UP);
+		}
+		this.effectiveness = effectiveness;
+	}
 
-    private void oxidationTick(World world) {
-        if (world.isSkyVisible(this.pos.up(1 + this.power)) && world.isRaining()) {
-            this.nextOxidation -= 5;
-        }
+	private void oxidationTick(World world) {
+		if (world.isSkyVisible(this.pos.up(1 + this.power)) && world.isRaining()) {
+			this.nextOxidation -= 5;
+		}
 
-        if ((this.nextOxidation - world.getTime()) <= 0) {
-            this.oxidize(world);
-            this.pickNextOxidationTime(world);
-        }
-    }
+		if ((this.nextOxidation - world.getTime()) <= 0) {
+			this.oxidize(world);
+			this.pickNextOxidationTime(world);
+		}
+	}
 
-    private void oxidize(World world) {
-        int yOffset = Math.max(1, this.random.nextInt(this.power + 1));
-        var pos = this.pos.up(yOffset);
-        var state = world.getBlockState(pos);
-        var block = state.getBlock();
-        if (block instanceof WeatherableTeslaCoilPartBlock && block instanceof Oxidizable oxidizable) {
-            oxidizable.getDegradationResult(state).ifPresent(res -> world.setBlockState(pos, res));
-        }
-    }
+	private void oxidize(World world) {
+		int yOffset = Math.max(1, this.random.nextInt(this.power + 1));
+		var pos = this.pos.up(yOffset);
+		var state = world.getBlockState(pos);
+		var block = state.getBlock();
+		if (block instanceof WeatherableTeslaCoilPartBlock && block instanceof Oxidizable oxidizable) {
+			oxidizable.getDegradationResult(state).ifPresent(res -> world.setBlockState(pos, res));
+		}
+	}
 
-    private boolean checkForIronBars(BlockPos.Mutable pos) {
-        BlockState state;
-        for (var direction : Direction.values()) {
-            if (!direction.getAxis().isHorizontal())
-                continue;
+	private boolean checkForIronBars(BlockPos.Mutable pos) {
+		BlockState state;
+		for (var direction : Direction.values()) {
+			if (!direction.getAxis().isHorizontal())
+				continue;
 
-            pos.move(direction);
+			pos.move(direction);
 
-            state = this.world.getBlockState(pos);
-            if (state.getBlock() != Blocks.IRON_BARS) {
-                return false;
-            }
+			state = this.world.getBlockState(pos);
+			if (state.getBlock() != Blocks.IRON_BARS) {
+				return false;
+			}
 
-            pos.move(direction.getOpposite());
-        }
-        return true;
-    }
+			pos.move(direction.getOpposite());
+		}
+		return true;
+	}
 
-    @Environment(EnvType.CLIENT)
-    protected void displaySideParticles() {
-        if (this.sideParticles > 18 || (this.power % 2 != 0 && this.sideParticles > 17)) {
-            this.sideParticles = 0;
-        }
+	@Environment(EnvType.CLIENT)
+	protected void displaySideParticles() {
+		if (this.sideParticles > 18 || (this.power % 2 != 0 && this.sideParticles > 17)) {
+			this.sideParticles = 0;
+		}
 
-        if (this.sideParticles % 2 == 0) {
-            float xPos = this.pos.getX() + .5f;
-            float zPos = this.pos.getZ() + .5f;
-            float yOffset = this.sideParticles / 2.f / (float) (5 - this.power);
-            float yPos = this.pos.getY() + yOffset;
+		if (this.sideParticles % 2 == 0) {
+			float xPos = this.pos.getX() + .5f;
+			float zPos = this.pos.getZ() + .5f;
+			float yOffset = this.sideParticles / 2.f / (float) (5 - this.power);
+			float yPos = this.pos.getY() + yOffset;
 
-            for (var direction : Direction.values()) {
-                if (direction.getAxis().isHorizontal()) {
-                    this.world.addParticle(ParticleTypes.CRIT,
-                            xPos + direction.getOffsetX(), yPos, zPos + direction.getOffsetZ(),
-                            0, 0.025, 0);
-                }
-            }
-        }
+			for (var direction : Direction.values()) {
+				if (direction.getAxis().isHorizontal()) {
+					this.world.addParticle(ParticleTypes.CRIT,
+							xPos + direction.getOffsetX(), yPos, zPos + direction.getOffsetZ(),
+							0, 0.025, 0);
+				}
+			}
+		}
 
-        this.sideParticles++;
-    }
+		this.sideParticles++;
+	}
 
-    @Environment(EnvType.CLIENT)
-    private void rollNextSmallArcDirection() {
-        final int cooldown = 5;
+	@Environment(EnvType.CLIENT)
+	private void rollNextSmallArcDirection() {
+		final int cooldown = 5;
 
-        if (this.smallArcCooldown > 0) {
-            this.smallArcCooldown--;
-            return;
-        }
+		if (this.smallArcCooldown > 0) {
+			this.smallArcCooldown--;
+			return;
+		}
 
-        int dirIndex = this.random.nextInt(20);
-        if (dirIndex < 6) {
-            this.smallArcDirection = Direction.values()[dirIndex];
-            if (this.smallArcDirection.getAxis().isVertical())
-                this.smallArcDirection = null;
-        } else
-            this.smallArcDirection = null;
+		int dirIndex = this.random.nextInt(20);
+		if (dirIndex < 6) {
+			this.smallArcDirection = Direction.values()[dirIndex];
+			if (this.smallArcDirection.getAxis().isVertical())
+				this.smallArcDirection = null;
+		} else
+			this.smallArcDirection = null;
 
-        this.smallArcCooldown = cooldown;
-    }
+		this.smallArcCooldown = cooldown;
+	}
 
-    protected void tryAttack() {
-        if (this.world.getTime() % (long) (20 * (1.f + (1.f - this.getEffectiveness()))) != 0L || this.random.nextBoolean())
-            return;
+	protected void tryAttack() {
+		if (this.world.getTime() % (long) (20 * (1.f + (1.f - this.getEffectiveness()))) != 0L || this.random.nextBoolean())
+			return;
 
-        double x = this.getPos().getX() + 0.5;
-        double y = this.getPos().getY();
-        double z = this.getPos().getZ() + 0.5;
+		double x = this.getPos().getX() + 0.5;
+		double y = this.getPos().getY();
+		double z = this.getPos().getZ() + 0.5;
 
-        var targetPredicate = TargetPredicate.createNonAttackable();
-        targetPredicate.setPredicate(entity -> entity instanceof Monster
-                || (entity instanceof IronGolemEntity && entity.getHealth() < entity.getMaxHealth() - 1.f));
-        int offset = (4 + this.power * 4);
-        var entity = this.world.getClosestEntity(LivingEntity.class, targetPredicate, null,
-                x, y, z,
-                new Box(this.pos.getX() - offset, this.pos.getY() - 4, this.pos.getZ() - offset,
-                        this.pos.getX() + offset, this.pos.getY() + offset - 2, this.pos.getZ() + offset));
+		var targetPredicate = TargetPredicate.createNonAttackable();
+		targetPredicate.setPredicate(entity -> entity instanceof Monster
+				|| (entity instanceof IronGolemEntity && entity.getHealth() < entity.getMaxHealth() - 1.f));
+		int offset = (4 + this.power * 4);
+		var entity = this.world.getClosestEntity(LivingEntity.class, targetPredicate, null,
+				x, y, z,
+				new Box(this.pos.getX() - offset, this.pos.getY() - 4, this.pos.getZ() - offset,
+						this.pos.getX() + offset, this.pos.getY() + offset - 2, this.pos.getZ() + offset));
 
-        if (entity != null) {
-            var lightningEntity = TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE.create(this.world);
+		if (entity != null) {
+			var lightningEntity = TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE.create(this.world);
 
-            if (lightningEntity == null) return;
+			if (lightningEntity == null) return;
 
-            lightningEntity.setPos(x, y + 1.5 + this.power, z);
-            lightningEntity.setTarget(entity);
-            lightningEntity.setTargetPredicate(targetPredicate);
+			lightningEntity.setPos(x, y + 1.5 + this.power, z);
+			lightningEntity.setTarget(entity);
+			lightningEntity.setTargetPredicate(targetPredicate);
 
-            this.world.spawnEntity(lightningEntity);
+			this.world.spawnEntity(lightningEntity);
 
-            if (this.getPower() > 1) {
-                this.nextOxidation -= 100;
-                this.markDirty();
-            }
-        }
-    }
+			if (this.getPower() > 1) {
+				this.nextOxidation -= 100;
+				this.markDirty();
+			}
+		}
+	}
 }

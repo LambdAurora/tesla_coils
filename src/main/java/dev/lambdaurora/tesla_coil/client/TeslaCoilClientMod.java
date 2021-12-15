@@ -24,8 +24,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
 
 /**
@@ -37,10 +37,10 @@ import net.minecraft.client.render.RenderLayer;
  */
 @Environment(EnvType.CLIENT)
 public class TeslaCoilClientMod implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
-        BlockEntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, TeslaCoilBlockEntityRenderer::new);
-        EntityRendererRegistry.INSTANCE.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, LightningArcEntityRenderer::new);
-        BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), TeslaCoilRegistry.TESLA_COIL_CONTROLLER_BLOCK);
-    }
+	@Override
+	public void onInitializeClient() {
+		BlockEntityRendererRegistry.register(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, TeslaCoilBlockEntityRenderer::new);
+		EntityRendererRegistry.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, LightningArcEntityRenderer::new);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), TeslaCoilRegistry.TESLA_COIL_CONTROLLER_BLOCK);
+	}
 }

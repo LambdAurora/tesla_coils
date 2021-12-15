@@ -25,25 +25,25 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Random;
 
 public class OxidizableTeslaSecondaryCoilBlock extends TeslaSecondaryCoilBlock implements Oxidizable {
-    private final Oxidizable.OxidizationLevel oxidizationLevel;
+	private final Oxidizable.OxidizationLevel oxidizationLevel;
 
-    public OxidizableTeslaSecondaryCoilBlock(Oxidizable.OxidizationLevel oxidizationLevel, Settings settings) {
-        super(settings, oxidizationLevel.ordinal());
-        this.oxidizationLevel = oxidizationLevel;
-    }
+	public OxidizableTeslaSecondaryCoilBlock(Oxidizable.OxidizationLevel oxidizationLevel, Settings settings) {
+		super(settings, oxidizationLevel.ordinal());
+		this.oxidizationLevel = oxidizationLevel;
+	}
 
-    @Override
-    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        this.tickDegradation(state, world, pos, random);
-    }
+	@Override
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		this.tickDegradation(state, world, pos, random);
+	}
 
-    @Override
-    public boolean hasRandomTicks(BlockState state) {
-        return Oxidizable.getIncreasedOxidationBlock(state.getBlock()).isPresent();
-    }
+	@Override
+	public boolean hasRandomTicks(BlockState state) {
+		return Oxidizable.getIncreasedOxidationBlock(state.getBlock()).isPresent();
+	}
 
-    @Override
-    public Oxidizable.OxidizationLevel getDegradationLevel() {
-        return this.oxidizationLevel;
-    }
+	@Override
+	public Oxidizable.OxidizationLevel getDegradationLevel() {
+		return this.oxidizationLevel;
+	}
 }

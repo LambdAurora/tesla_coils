@@ -20,8 +20,8 @@ package dev.lambdaurora.tesla_coil.entity.damage;
 import net.minecraft.entity.damage.DamageSource;
 
 public class TeslaCoilDamageSource extends DamageSource {
-    public TeslaCoilDamageSource() {
-        super("tesla_coil");
-        this.setBypassesArmor();
-    }
+	public TeslaCoilDamageSource() {
+		super("tesla_coil");
+		this.setBypassesArmor();
+	}
 }

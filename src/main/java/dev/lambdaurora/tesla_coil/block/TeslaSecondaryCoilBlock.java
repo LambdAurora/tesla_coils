@@ -21,7 +21,6 @@ import dev.lambdaurora.tesla_coil.TeslaCoilMod;
 import dev.lambdaurora.tesla_coil.block.entity.TeslaCoilBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -30,38 +29,38 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 public class TeslaSecondaryCoilBlock extends WeatherableTeslaCoilPartBlock {
-    public static final VoxelShape BASE_SHAPE = createCuboidShape(5, 0, 5, 11, 16, 11);
+	public static final VoxelShape BASE_SHAPE = createCuboidShape(5, 0, 5, 11, 16, 11);
 
-    public TeslaSecondaryCoilBlock(Settings settings, int weathered) {
-        super(settings, weathered);
-    }
+	public TeslaSecondaryCoilBlock(Settings settings, int weathered) {
+		super(settings, weathered);
+	}
 
-    /* Shapes */
+	/* Shapes */
 
-    @Override
-    public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
-        return BASE_SHAPE;
-    }
+	@Override
+	public VoxelShape getCullingShape(BlockState state, BlockView world, BlockPos pos) {
+		return BASE_SHAPE;
+	}
 
-    @Override
-    public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return BASE_SHAPE;
-    }
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return BASE_SHAPE;
+	}
 
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return BASE_SHAPE;
-    }
+	@Override
+	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return BASE_SHAPE;
+	}
 
-    /* Interaction */
+	/* Interaction */
 
-    @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        var controllerPos = pos.offset(Direction.DOWN, 2);
-        var blockEntity = world.getBlockEntity(controllerPos);
-        if (!(blockEntity instanceof TeslaCoilBlockEntity))
-            return;
+	@Override
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		var controllerPos = pos.offset(Direction.DOWN, 2);
+		var blockEntity = world.getBlockEntity(controllerPos);
+		if (!(blockEntity instanceof TeslaCoilBlockEntity))
+			return;
 
-        TeslaCoilMod.onTeslaCoilEntityCollision((TeslaCoilBlockEntity) blockEntity, entity);
-    }
+		TeslaCoilMod.onTeslaCoilEntityCollision((TeslaCoilBlockEntity) blockEntity, entity);
+	}
 }

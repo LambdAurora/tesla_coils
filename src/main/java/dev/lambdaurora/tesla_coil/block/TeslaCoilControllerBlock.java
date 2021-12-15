@@ -30,24 +30,24 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class TeslaCoilControllerBlock extends BlockWithEntity {
-    public TeslaCoilControllerBlock(Settings settings) {
-        super(settings);
-    }
+	public TeslaCoilControllerBlock(Settings settings) {
+		super(settings);
+	}
 
-    /* Block Entity Stuff */
+	/* Block Entity Stuff */
 
-    @Override
-    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new TeslaCoilBlockEntity(pos, state);
-    }
+	@Override
+	public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new TeslaCoilBlockEntity(pos, state);
+	}
 
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, world.isClient() ? TeslaCoilBlockEntity::clientTick : TeslaCoilBlockEntity::serverTick);
-    }
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return checkType(type, TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, world.isClient() ? TeslaCoilBlockEntity::clientTick : TeslaCoilBlockEntity::serverTick);
+	}
 
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
+	@Override
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
+	}
 }

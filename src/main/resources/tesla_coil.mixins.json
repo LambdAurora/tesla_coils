@@ -2,7 +2,6 @@
   "required": true,
   "package": "dev.lambdaurora.tesla_coil.mixin",
   "compatibilityLevel": "JAVA_16",
-  "plugin": "dev.lambdaurora.tesla_coil.help_me.TransformerMixinPlugin",
   "client": [
     "client.RenderPhaseAccessor"
   ],

@@ -23,15 +23,15 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(LightningEntity.class)
 public interface LightningEntityAccessor {
-    @Accessor
-    int getAmbientTick();
+	@Accessor
+	int getAmbientTick();
 
-    @Accessor
-    void setAmbientTick(int ambientTick);
+	@Accessor
+	void setAmbientTick(int ambientTick);
 
-    @Accessor
-    int getRemainingActions();
+	@Accessor
+	int getRemainingActions();
 
-    @Accessor
-    void setRemainingActions(int remainingActions);
+	@Accessor
+	void setRemainingActions(int remainingActions);
 }

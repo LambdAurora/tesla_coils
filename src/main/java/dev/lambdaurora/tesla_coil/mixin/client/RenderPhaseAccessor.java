@@ -23,23 +23,23 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(RenderPhase.class)
 public interface RenderPhaseAccessor {
-    @Accessor("LIGHTNING_TRANSPARENCY")
-    static RenderPhase.Transparency getLightningTransparency() {
-        throw new IllegalStateException("Injection failed.");
-    }
+	@Accessor("LIGHTNING_TRANSPARENCY")
+	static RenderPhase.Transparency getLightningTransparency() {
+		throw new IllegalStateException("Injection failed.");
+	}
 
-    @Accessor("LIGHTNING_SHADER")
-    static RenderPhase.Shader getLightningShader() {
-        throw new IllegalStateException("Injection failed.");
-    }
+	@Accessor("LIGHTNING_SHADER")
+	static RenderPhase.Shader getLightningShader() {
+		throw new IllegalStateException("Injection failed.");
+	}
 
-    @Accessor("ALL_MASK")
-    static RenderPhase.WriteMaskState getAllMask() {
-        throw new IllegalStateException("Injection failed.");
-    }
+	@Accessor("ALL_MASK")
+	static RenderPhase.WriteMaskState getAllMask() {
+		throw new IllegalStateException("Injection failed.");
+	}
 
-    @Accessor("WEATHER_TARGET")
-    static RenderPhase.Target getWeatherTarget() {
-        throw new IllegalStateException("Injection failed.");
-    }
+	@Accessor("WEATHER_TARGET")
+	static RenderPhase.Target getWeatherTarget() {
+		throw new IllegalStateException("Injection failed.");
+	}
 }

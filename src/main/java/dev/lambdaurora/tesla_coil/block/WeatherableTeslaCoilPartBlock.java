@@ -20,19 +20,19 @@ package dev.lambdaurora.tesla_coil.block;
 import net.minecraft.block.Block;
 
 public class WeatherableTeslaCoilPartBlock extends Block {
-    private final int weathered;
+	private final int weathered;
 
-    public WeatherableTeslaCoilPartBlock(Settings settings, int weathered) {
-        super(settings);
-        this.weathered = weathered;
-    }
+	public WeatherableTeslaCoilPartBlock(Settings settings, int weathered) {
+		super(settings);
+		this.weathered = weathered;
+	}
 
-    /**
-     * Gets the weathered state of this block.
-     *
-     * @return the weathered state of this block between 0 and 4
-     */
-    public int getWeathered() {
-        return this.weathered;
-    }
+	/**
+	 * Gets the weathered state of this block.
+	 *
+	 * @return the weathered state of this block between 0 and 4
+	 */
+	public int getWeathered() {
+		return this.weathered;
+	}
 }

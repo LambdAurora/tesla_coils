@@ -33,28 +33,28 @@ import net.minecraft.client.util.math.MatrixStack;
  */
 @Environment(EnvType.CLIENT)
 public class TeslaCoilEnergySwirlModel extends Model {
-    private final ModelPart body;
+	private final ModelPart body;
 
-    public TeslaCoilEnergySwirlModel(ModelPart body) {
-        super(RenderLayer::getEntityCutoutNoCull);
-        this.body = body;
-    }
+	public TeslaCoilEnergySwirlModel(ModelPart body) {
+		super(RenderLayer::getEntityCutoutNoCull);
+		this.body = body;
+	}
 
-    public static TexturedModelData buildModel(int power) {
-        var data = new ModelData();
-        var root = data.getRoot();
-        root.addChild(
-                "body",
-                ModelPartBuilder.create()
-                        .uv(16, 16)
-                        .cuboid(4.f, 10.f, 4.f, 8.f, 23.f + ((power - 1) * 16), 8.f),
-                ModelTransform.pivot(0.f, 6.f, 0.f)
-        );
-        return TexturedModelData.of(data, 64, 32);
-    }
+	public static TexturedModelData buildModel(int power) {
+		var data = new ModelData();
+		var root = data.getRoot();
+		root.addChild(
+				"body",
+				ModelPartBuilder.create()
+						.uv(16, 16)
+						.cuboid(4.f, 10.f, 4.f, 8.f, 23.f + ((power - 1) * 16), 8.f),
+				ModelTransform.pivot(0.f, 6.f, 0.f)
+		);
+		return TexturedModelData.of(data, 64, 32);
+	}
 
-    @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-        this.body.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-    }
+	@Override
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
+		this.body.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+	}
 }

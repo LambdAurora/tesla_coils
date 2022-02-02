@@ -134,11 +134,10 @@ public class TeslaCoilBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound nbt) {
-		nbt = super.writeNbt(nbt);
+	public void writeNbt(NbtCompound nbt) {
+		super.writeNbt(nbt);
 		nbt.putInt("power", this.power);
 		nbt.putLong("next_oxidation", this.nextOxidation);
-		return nbt;
 	}
 
 	protected void pickNextOxidationTime(World world) {
@@ -172,8 +171,9 @@ public class TeslaCoilBlockEntity extends BlockEntity {
 
 		pos.move(Direction.UP);
 		this.power = 1;
-		while ((state = world.getBlockState(pos)).getBlock() instanceof TeslaSecondaryCoilBlock && this.checkForIronBars(pos) && power < 3) {
-			if (((TeslaSecondaryCoilBlock) state.getBlock()).getWeathered() >= 3) {
+		while ((state = world.getBlockState(pos)).getBlock() instanceof TeslaSecondaryCoilBlock secondaryCoilBlock
+				&& this.checkForIronBars(pos) && power < 3) {
+			if (secondaryCoilBlock.getWeathered() >= 3) {
 				this.power = 0;
 				return;
 			}
@@ -194,7 +194,6 @@ public class TeslaCoilBlockEntity extends BlockEntity {
 
 			var block = state.getBlock();
 			if (block instanceof WeatherableTeslaCoilPartBlock part) {
-
 				effectiveness += ((3.f - part.getWeathered()) / 3.f) / this.getPower();
 			}
 

@@ -41,6 +41,10 @@ public class TeslaCoilMod implements ModInitializer {
 		TeslaCoilRegistry.init();
 	}
 
+	public static Identifier id(String path) {
+		return new Identifier(NAMESPACE, path);
+	}
+
 	public static void onTeslaCoilEntityCollision(TeslaCoilBlockEntity blockEntity, Entity entity) {
 		if (blockEntity.isEnabled()) {
 			if (entity instanceof ItemEntity itemEntity && itemEntity.getStack().isIn(TeslaCoilMod.TESLA_COIL_IMMUNE_ITEMS))

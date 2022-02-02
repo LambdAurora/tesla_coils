@@ -34,7 +34,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vector4f;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the tesla coil block entity renderer.
@@ -46,7 +45,7 @@ import org.jetbrains.annotations.NotNull;
 @Environment(EnvType.CLIENT)
 public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCoilBlockEntity> {
 	private static final Identifier ENERGY_SWIRL_TEXTURE = new Identifier("textures/entity/creeper/creeper_armor.png");
-	private static final Identifier SMALL_RANDOM_ELECTRIC_ARC_TEXTURE = new Identifier(TeslaCoilMod.NAMESPACE, "textures/entity/electric_arc/random_small.png");
+	private static final Identifier SMALL_RANDOM_ELECTRIC_ARC_TEXTURE = TeslaCoilMod.id("textures/entity/electric_arc/random_small.png");
 	private final ModelPart[] models = new ModelPart[3];
 
 	public TeslaCoilBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
@@ -109,7 +108,7 @@ public class TeslaCoilBlockEntityRenderer implements BlockEntityRenderer<TeslaCo
 		return partialAge * 0.01f;
 	}
 
-	public static RenderLayer getEnergySwirl(@NotNull Identifier texture, float x, float y) {
+	public static RenderLayer getEnergySwirl(Identifier texture, float x, float y) {
 		return RenderLayer.getEnergySwirl(texture, x, y);
 	}
 }

@@ -1,13 +1,18 @@
 {
   "schemaVersion": 1,
   "id": "tesla_coil",
-  "name": "Tesla Coil",
   "version": "${version}",
-  "license": "LGPLv3",
+  "name": "Tesla Coils",
   "authors": [
     "LambdAurora",
     "april"
   ],
+  "contact": {
+    "sources": "https://github.com/LambdAurora/tesla_coils",
+    "issues": "https://github.com/LambdAurora/tesla_coils/issues"
+  },
+  "license": "LGPLv3",
+  "icon": "assets/tesla_coil/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -22,9 +27,9 @@
     "tesla_coil.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.17",
+    "minecraft": ">=1.18",
     "fabricloader": ">=0.12.12",
     "fabric": ">=0.44.0+1.17",
-    "java": ">=16"
+    "java": ">=17"
   }
 }

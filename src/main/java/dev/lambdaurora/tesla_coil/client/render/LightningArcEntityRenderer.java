@@ -140,10 +140,10 @@ public class LightningArcEntityRenderer extends EntityRenderer<LightningArcEntit
 	/**
 	 * Draws a segment of the lightning arc.
 	 *
-	 * @param matrix The matrix.
-	 * @param vertexConsumer The vertex consumer.
-	 * @param y1 The first Y-coordinate of the segment.
-	 * @param y2 The second Y-coordinate of the segment.
+	 * @param matrix the matrix
+	 * @param vertexConsumer the vertex consumer
+	 * @param y1 the first Y-coordinate of the segment
+	 * @param y2 the second Y-coordinate of the segment
 	 */
 	private static void segment(Matrix4f matrix, VertexConsumer vertexConsumer, float start, float distance, float y1, float y2, float startZOffset, float endZOffset,
 	                            boolean drawStart, boolean drawEnd) {

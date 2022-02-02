@@ -77,7 +77,7 @@ public class LightningArcEntity extends LightningEntity {
 	public Vec3d getTarget() {
 		int targetEntityId = this.dataTracker.get(TARGET_ENTITY);
 		if (targetEntityId != this.getId()) {
-			var targetEntity = this.getEntityWorld().getEntityById(targetEntityId);
+			var targetEntity = this.getWorld().getEntityById(targetEntityId);
 			if (targetEntity != null)
 				return targetEntity.getPos().subtract(this.getPos());
 		}

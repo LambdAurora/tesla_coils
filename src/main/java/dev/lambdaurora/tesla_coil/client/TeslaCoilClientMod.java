@@ -23,10 +23,10 @@ import dev.lambdaurora.tesla_coil.client.render.TeslaCoilBlockEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
+import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
 
 /**
  * Represents the Tesla Coils client mod.
@@ -41,6 +41,6 @@ public class TeslaCoilClientMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		BlockEntityRendererRegistry.register(TeslaCoilRegistry.TESLA_COIL_BLOCK_ENTITY_TYPE, TeslaCoilBlockEntityRenderer::new);
 		EntityRendererRegistry.register(TeslaCoilRegistry.LIGHTNING_ARC_ENTITY_TYPE, LightningArcEntityRenderer::new);
-		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(), TeslaCoilRegistry.TESLA_COIL_CONTROLLER_BLOCK);
+		BlockRenderLayerMap.put(RenderLayer.getCutoutMipped(), TeslaCoilRegistry.TESLA_COIL_CONTROLLER_BLOCK);
 	}
 }
